@@ -4,7 +4,7 @@ namespace BankSystem.Data.Entities;
 
 public class User : IdentityUser
 {
-    public Guid Id { get; set; }
+    public string Id { get; set; }
     public string EGN { get; set; }
     //public string Username { get; set; }
   //  public string Email { get; set; }

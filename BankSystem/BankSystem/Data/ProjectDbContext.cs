@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BankSystem.Data;
 
-public class ProjectDbContext : IdentityDbContext
+public class ProjectDbContext : IdentityDbContext<User>
 {
     
     public DbSet<Currency> Currencies { get; set; }
