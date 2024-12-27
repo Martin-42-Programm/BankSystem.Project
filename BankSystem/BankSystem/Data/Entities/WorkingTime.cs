@@ -6,7 +6,6 @@ public class WorkingTime:BaseEntity
 
     public WorkingTime()
     {
-        // Initialize the dictionary with the days of the week
         WeeklySchedule = new Dictionary<string, DayHours>
         {
             { "Monday", new DayHours(null, null) },
@@ -19,7 +18,7 @@ public class WorkingTime:BaseEntity
         };
     }
 
-    // Method to set working hours for a specific day
+
     public void SetDayHours(string day, TimeSpan? opening, TimeSpan? closing)
     {
         if (WeeklySchedule.ContainsKey(day))
