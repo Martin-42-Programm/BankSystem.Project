@@ -1,6 +1,6 @@
 namespace BankSystem.Data.Entities;
 
-public class Office
+public class Office : MetadataBaseEntity
 {
     [Key]
     public Guid Id { get; set; }

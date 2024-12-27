@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BankSystem.Data.Entities;
 
-public class Card
+public class Card : MetadataBaseEntity
 {
     [Key]
     public Guid Id { get; set; }

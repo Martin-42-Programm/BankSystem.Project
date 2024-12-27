@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BankSystem.Data.Entities;
 
-public class Transaction
+public class Transaction : MetadataBaseEntity
 {
     [Key]
     public Guid Id { get; set; }
