@@ -1,19 +1,26 @@
-using Microsoft.EntityFrameworkCore;
+using BankSystem.Models;
+using BankSystem.ServiceModels;
 
 namespace BankSystem.Services;
 
-public class AccountService<Account, AccountServiceModel> : IGenericService<Account, AccountServiceModel>
+public class AccountService : IGenericService<Account, AccountServiceModel>
+
 {
-    private readonly AccountRepository repository;
+    private readonly AccountRepository _repository;
 
     public AccountService(AccountRepository repository)
     {
-        this.repository = repository;
+        this._repository = repository;
     }
     
     public async Task<AccountServiceModel> GetByIdAsync(string id)
     {
-        throw new System.NotImplementedException();
+        return (await this._repository.GetAll()
+            .Include(c => c.CreatedBy)
+            .Include(c => c.ModifiedBy)
+            .Include(c => c.DeletedBy)
+            .SingleOrDefaultAsync(c => c.Id == Guid.Parse(id)))?
+            .ToModel()?? new AccountServiceModel();
 
 
     }

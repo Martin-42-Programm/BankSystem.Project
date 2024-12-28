@@ -1,4 +1,4 @@
-namespace BankSystem.Service.Models;
+namespace BankSystem.ServiceModels;
 
 public class BaseServiceModel
 {
