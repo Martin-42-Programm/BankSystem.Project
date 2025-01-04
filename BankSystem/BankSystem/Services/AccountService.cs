@@ -20,7 +20,7 @@ public class AccountService : IGenericService<Account, AccountServiceModel>
             .Include(c => c.ModifiedBy)
             .Include(c => c.DeletedBy)
             .SingleOrDefaultAsync(c => c.Id == Guid.Parse(id)))?
-            .ToModel()?? new AccountServiceModel();
+            .ToModel() ?? new AccountServiceModel();
 
 
     }
