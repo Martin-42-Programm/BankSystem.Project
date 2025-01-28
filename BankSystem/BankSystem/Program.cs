@@ -32,23 +32,20 @@ if (!app.Environment.IsDevelopment())
 
 using (var serviceScope = app.Services.CreateScope())
 {
-    using (var context = serviceScope.ServiceProvider.GetRequiredService<ProjectDbContext>())
-    {
-        context.Database.Migrate();
-    }
+
+
+    app.UseHttpsRedirection();
+    app.UseRouting();
+
+    app.UseAuthentication(); // Add this line
+    app.UseAuthorization();
+
+    app.MapStaticAssets();
+
+    app.MapControllerRoute(
+            name: "default",
+            pattern: "{controller=Home}/{action=Index}/{id?}")
+        .WithStaticAssets();
+
+    app.Run();
 }
-
-app.UseHttpsRedirection();
-app.UseRouting();
-
-app.UseAuthentication(); // Add this line
-app.UseAuthorization();
-
-app.MapStaticAssets();
-
-app.MapControllerRoute(
-        name: "default",
-        pattern: "{controller=Home}/{action=Index}/{id?}")
-    .WithStaticAssets();
-
-app.Run();
