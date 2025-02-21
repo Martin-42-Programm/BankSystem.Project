@@ -15,6 +15,9 @@ builder.Services.AddDbContext<ProjectDbContext>(options =>
     options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 2))));
 
 
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped< AccountRepository>();
+builder.Services.AddScoped<AccountService>();
 
 
 var app = builder.Build();
@@ -36,6 +39,8 @@ using (var serviceScope = app.Services.CreateScope())
         context.Database.Migrate();
     }
 }
+
+
 
 app.UseHttpsRedirection();
 app.UseRouting();

@@ -1,0 +1,29 @@
+@model Account
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>title</title>
+</head>
+<body>
+
+<form method="post" asp-action="Create" asp-controller="BankAccount">
+    <p>
+        <label> Type </label>
+        <input type="text" name="type" placeholder="savings" >
+    </p>
+
+        <button type="submit">Create</button>
+
+</form>
+<div>
+
+
+
+</div>
+</body>
+</html>
