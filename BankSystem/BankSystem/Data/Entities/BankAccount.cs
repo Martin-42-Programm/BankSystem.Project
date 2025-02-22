@@ -5,7 +5,7 @@ namespace BankSystem.Data.Entities;
 
 
 
-public class Account : MetadataBaseEntity
+public class BankAccount : MetadataBaseEntity
 {
     [Key]
     public Guid Id { get; set; }

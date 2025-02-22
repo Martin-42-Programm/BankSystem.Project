@@ -21,12 +21,27 @@ builder.Services.AddDbContext<ProjectDbContext>(options =>
 
 
 // Add Identity services
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ProjectDbContext>();
 
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddScoped<AccountRepository>();
-builder.Services.AddScoped<IAccountService, AccountService>();
+
+//Add repositories
+builder.Services.AddScoped<BankAccountRepository>();
+builder.Services.AddScoped<CardRepository>();
+builder.Services.AddScoped<TransactionRepository>();
+builder.Services.AddScoped<CreditRepository>();
+builder.Services.AddScoped<OfficeRepository>();
+builder.Services.AddScoped<CurrencyRepository>();
+
+
+//Add services
+builder.Services.AddScoped<ITransactionService, TransactionService>();
+builder.Services.AddScoped<IBankAccountService, BankBankAccountService>();
+builder.Services.AddScoped<ICardService, CardService>();
+builder.Services.AddScoped<ICreditService, CreditService>();
+builder.Services.AddScoped<IOfficeService, OfficeService>();
+builder.Services.AddScoped<ICurrencyService, CurrencyService>();
 
 
 
@@ -46,6 +61,8 @@ using (var serviceScope = app.Services.CreateScope())
     
     app.UseHttpsRedirection();
     app.UseRouting();
+    app.MapControllers();
+    app.MapRazorPages();  
 
     app.UseAuthentication(); // Add this line
     app.UseAuthorization();

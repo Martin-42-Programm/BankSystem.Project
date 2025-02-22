@@ -12,3 +12,4 @@ global using BankSystem.Services;
 //global using BankSystem.Repositories.Not;
 
 global using Microsoft.EntityFrameworkCore;
+global using BankSystem.Views.Account;
