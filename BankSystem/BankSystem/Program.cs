@@ -1,4 +1,7 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using BankSystem.Data;
+using BankSystem.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,9 +18,19 @@ builder.Services.AddRazorPages();
 builder.Services.AddDbContext<ProjectDbContext>(options =>
     options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 2))));
 
+<<<<<<< HEAD
+=======
+
+// Add Identity services
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<ProjectDbContext>();
+
+
+>>>>>>> 1cfc6134cdb97d7f7050177ef953733fe25064b6
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<AccountRepository>();
 builder.Services.AddScoped<IAccountService, AccountService>();
+
 
 var app = builder.Build();
 
@@ -30,11 +43,24 @@ if (!app.Environment.IsDevelopment())
 
 using (var serviceScope = app.Services.CreateScope())
 {
-    using (var context = serviceScope.ServiceProvider.GetRequiredService<ProjectDbContext>())
-    {
-        context.Database.Migrate();
-    }
+
+
+    app.UseHttpsRedirection();
+    app.UseRouting();
+
+    app.UseAuthentication(); // Add this line
+    app.UseAuthorization();
+
+    app.MapStaticAssets();
+
+    app.MapControllerRoute(
+            name: "default",
+            pattern: "{controller=Home}/{action=Index}/{id?}")
+        .WithStaticAssets();
+
+    app.Run();
 }
+<<<<<<< HEAD
 
 app.UseHttpsRedirection();
 app.UseStaticFiles(); // To serve static files
@@ -51,3 +77,5 @@ app.MapControllerRoute(
 app.MapRazorPages();
 
 app.Run();
+=======
+>>>>>>> 1cfc6134cdb97d7f7050177ef953733fe25064b6
