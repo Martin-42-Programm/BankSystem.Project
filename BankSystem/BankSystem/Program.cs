@@ -17,9 +17,17 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ProjectDbContext>(options =>
     options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 2))));
 
+
 // Add Identity services
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ProjectDbContext>();
+
+
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped< AccountRepository>();
+builder.Services.AddScoped<AccountService>();
+
+
 
 var app = builder.Build();
 

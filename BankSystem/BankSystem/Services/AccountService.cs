@@ -3,7 +3,7 @@ using BankSystem.ServiceModels;
 
 namespace BankSystem.Services;
 
-public class AccountService : IGenericService<Account, AccountServiceModel>
+public class AccountService : IAccountService
 
 {
     private readonly AccountRepository _repository;
@@ -34,7 +34,10 @@ public class AccountService : IGenericService<Account, AccountServiceModel>
 
     public async Task<AccountServiceModel> AddAsync(AccountServiceModel model)
     {
-        throw new System.NotImplementedException();
+        if (model == null)
+            return new AccountServiceModel();
+        //await _repository.CreateAsync(model.ToEntity());
+        return model;
     }
 
     public async Task<AccountServiceModel> UpdateAsync(AccountServiceModel model)

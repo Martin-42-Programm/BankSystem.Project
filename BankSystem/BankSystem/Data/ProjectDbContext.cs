@@ -13,8 +13,6 @@ public class ProjectDbContext : IdentityDbContext<User>
     public DbSet<Currency> Currencies { get; set; }
     public DbSet<Account> Accounts { get; set; }
     
-
-    
     public DbSet<Card> Cards { get; set; }
     
     public DbSet<User> Users { get; set; }
