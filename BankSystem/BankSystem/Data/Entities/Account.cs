@@ -15,7 +15,7 @@ public class Account : MetadataBaseEntity
     
     public virtual User User { get; set; }
     
-    public string Balance { get; set; }
+    public double Balance { get; set; }
     
     [ForeignKey("Currency")]
     public string CurrencyId { get; set; }

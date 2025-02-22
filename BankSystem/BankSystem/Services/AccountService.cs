@@ -24,19 +24,16 @@ public class AccountService : IAccountService
 
 
     }
-
-
-
     public IQueryable<AccountServiceModel> GetAll()
     {
-        throw new System.NotImplementedException();
+        return this.InternalGetAll().Select(c => c.ToModel());
     }
 
     public async Task<AccountServiceModel> AddAsync(AccountServiceModel model)
     {
         if (model == null)
             return new AccountServiceModel();
-        //await _repository.CreateAsync(model.ToEntity());
+        await _repository.CreateAsync(model.ToEntity());
         return model;
     }
 
@@ -49,4 +46,18 @@ public class AccountService : IAccountService
     {
         throw new System.NotImplementedException();
     }
+    public AccountServiceModel GetById(object id)
+    {
+        return _repository.GetById((Guid)id).ToModel();
+    }
+    
+    private IQueryable<Account> InternalGetAll()
+    {
+        return this._repository.GetAll()
+            .Include(r => r.CreatedBy)
+            .Include(r => r.ModifiedBy)
+            .Include(r => r.DeletedBy);
+    }
+
+   
 }

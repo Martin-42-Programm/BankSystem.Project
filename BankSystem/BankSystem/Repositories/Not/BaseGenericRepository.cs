@@ -43,4 +43,9 @@ public abstract class BaseGenericRepository<TEntity> : IGenericRepository<TEntit
         await this.Context.SaveChangesAsync();
         return entity;
     }
+
+    public virtual TEntity GetById(object id)
+    {
+        return this.Context.Set<TEntity>().Find(id);
+    }
 }

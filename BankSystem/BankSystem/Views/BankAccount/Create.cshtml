@@ -11,12 +11,15 @@
 </head>
 <body>
 
-<form method="post" asp-action="Create" asp-controller="BankAccount">
+<form method="post" asp-action="Details" asp-controller="BankAccount">
     <p>
         <label> Type </label>
         <input type="text" name="type" placeholder="savings" >
     </p>
-
+    <p>
+        <label> Currency </label>
+        <input type="text" name="type" placeholder="USD" >
+    </p>
         <button type="submit">Create</button>
 
 </form>
