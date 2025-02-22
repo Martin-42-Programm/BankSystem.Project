@@ -2,11 +2,11 @@ using BankSystem.Data.Entities;
 
 namespace BankSystem.Repositories;
 
-public class AccountRepository : MetadataBaseGenericRepository<Account>
+public class BankAccountRepository : MetadataBaseGenericRepository<BankAccount>
 {
     //private readonly ProjectDbContext _context;
     
-    public AccountRepository(ProjectDbContext context, IHttpContextAccessor httpContextAccessor) : base(context,
+    public BankAccountRepository(ProjectDbContext context, IHttpContextAccessor httpContextAccessor) : base(context,
         httpContextAccessor)
     {
         

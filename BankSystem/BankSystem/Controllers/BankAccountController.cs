@@ -1,21 +1,23 @@
 using Microsoft.AspNetCore.Mvc;
+using BankSystem.Services;
+using BankSystem.ServiceModels;
 
 namespace BankSystem.Controllers;
 
 public class BankAccountController : Controller
 {
-    private IAccountService accountService;
-    private ICurrencyService currencyService;
+    private readonly IBankAccountService _bankAccountService;
+    private readonly ICurrencyService _currencyService;
 
-    public BankAccountController(IAccountService accountService)
+    public BankAccountController(IBankAccountService bankAccountService, ICurrencyService currencyService)
     {
-        this.accountService = accountService;
+        _bankAccountService = bankAccountService;
+        _currencyService = currencyService;
     }
 
     public IActionResult Details()
     {
-
-        var model = accountService.GetAll().ToList();
+        var model = _bankAccountService.GetAll().ToList();
         return View(model);
     }
 
@@ -23,10 +25,17 @@ public class BankAccountController : Controller
     {
         return View();
     }
+
     [HttpPost]
-    public IActionResult Create(string type, string currency)
+    public async Task<IActionResult> Create(string type, string currency)
     {
-        var account = new AccountServiceModel
+        if (string.IsNullOrWhiteSpace(type) || string.IsNullOrWhiteSpace(currency))
+        {
+            ModelState.AddModelError("", "Type and Currency are required.");
+            return View();
+        }
+
+        var account = new BankAccountServiceModel
         {
             Type = type,
             Currency = new Currency
@@ -34,13 +43,11 @@ public class BankAccountController : Controller
                 CurrencyId = currency
             },
             Balance = "0.0",
-            Id = new Guid(),
+            Id = Guid.NewGuid() // ✅ Use Guid.NewGuid() instead of new Guid()
         };
 
-        
-        accountService.AddAsync(account);
+        await _bankAccountService.AddAsync(account); // ✅ Ensure it's awaited.
 
         return RedirectToAction(nameof(Details));
     }
-    
 }

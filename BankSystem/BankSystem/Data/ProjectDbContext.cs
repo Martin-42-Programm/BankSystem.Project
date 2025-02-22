@@ -11,7 +11,7 @@ public class ProjectDbContext : IdentityDbContext<User>
 {
     
     public DbSet<Currency> Currencies { get; set; }
-    public DbSet<Account> Accounts { get; set; }
+    public DbSet<BankAccount> BankAccounts { get; set; }
     
     public DbSet<Card> Cards { get; set; }
     
@@ -26,6 +26,9 @@ public class ProjectDbContext : IdentityDbContext<User>
     public DbSet<WorkingTime> WorkingTimes { get; set; }
     
     public DbSet<Office> Offices { get; set; }
+    
+    public DbSet<CreditRequest> CreditRequests { get; set; }
+    public DbSet<CreditManagement> CreditManagements { get; set; }
      
     public ProjectDbContext(DbContextOptions<ProjectDbContext> options)
         : base(options)

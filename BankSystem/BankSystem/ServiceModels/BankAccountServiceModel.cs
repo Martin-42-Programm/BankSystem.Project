@@ -1,6 +1,6 @@
 namespace BankSystem.ServiceModels;
 
-public class AccountServiceModel : BaseServiceModel
+public class BankAccountServiceModel : BaseServiceModel
 {
 
     public Guid Id { get; set; }

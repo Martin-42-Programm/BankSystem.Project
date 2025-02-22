@@ -1,11 +1,11 @@
 namespace BankSystem.Mappings;
 
-public static class AccountMappings
+public static class BankAccountMappings
 {
     // Map from AccountServiceModel to Account entity
-    public static Account ToEntity(this AccountServiceModel model)
+    public static BankAccount ToEntity(this BankAccountServiceModel model)
     {
-        return new Account()
+        return new BankAccount()
         {
             Id = model.Id,                       // Map Guid Id
             Balance = double.Parse(model.Balance),             // Map Balance
@@ -18,9 +18,9 @@ public static class AccountMappings
     }
     
     // Map from Account entity to AccountServiceModel
-    public static AccountServiceModel ToModel(this Account entity)
+    public static BankAccountServiceModel ToModel(this BankAccount entity)
     {
-        return new AccountServiceModel
+        return new BankAccountServiceModel
         {
             Id = entity.Id,                     // Map Guid Id
             Balance = entity.Balance.ToString(),           // Map Balance

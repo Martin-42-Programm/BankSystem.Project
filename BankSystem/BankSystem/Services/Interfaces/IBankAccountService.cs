@@ -1,6 +1,6 @@
 namespace BankSystem.Services;
 
-public interface IAccountService : IGenericService<Account, AccountServiceModel>
+public interface IBankAccountService : IGenericService<BankAccount, BankAccountServiceModel>
 {
     /*void Add(Account account);
     void Update(Account account);
