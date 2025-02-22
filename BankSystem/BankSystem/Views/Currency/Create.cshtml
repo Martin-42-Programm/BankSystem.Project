@@ -1,4 +1,5 @@
-@model BankAccount
+
+
 @{
     Layout = "_Layout";
 }
@@ -7,21 +8,21 @@
 <html lang="en">
 
 <head>
-    <title>Create Bank Account</title>
+    <title>Create New Currency</title>
 </head>
 
 <body>
-<h2>Create Bank Account</h2>
+<h2>Create New Currency</h2>
 
-<form method="post" asp-action="Create" asp-controller="BankAccount">
+<form method="post" asp-action="Create" asp-controller="Currency">
     <p>
-        <label>Type:</label>
-        <input type="text" name="type" placeholder="e.g., savings" required />
+        <label>Name:</label>
+        <input type="text" name="currency" placeholder="e.g., USD" required />
     </p>
 
     <p>
-        <label>Currency:</label>
-        <input type="text" name="currency" placeholder="e.g., USD" required />
+        <label>ExchangeRate:</label>
+        <input type="text" name="exchangeRate" placeholder="e.g., 1,9594" required />
     </p>
 
     <button type="submit">Create</button>

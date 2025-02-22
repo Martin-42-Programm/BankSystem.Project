@@ -21,7 +21,7 @@ namespace BankSystem.Views.Account
             [Compare("Password", ErrorMessage = "Passwords do not match.")]
             [DataType(DataType.Password)]
             public string ConfirmPassword { get; set; }
-
+            public string UserId   { get; set; }
             public void OnGet()
             {
             }

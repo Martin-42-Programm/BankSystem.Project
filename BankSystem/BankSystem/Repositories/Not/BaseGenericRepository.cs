@@ -15,7 +15,7 @@ public abstract class BaseGenericRepository<TEntity> : IGenericRepository<TEntit
     
     public virtual async Task<TEntity> CreateAsync(TEntity entity)
     {
-        await this.Context.AddAsync(entity);
+        await this.Context.Set<TEntity>().AddAsync(entity);
         await this.Context.SaveChangesAsync();
         return entity;
     }

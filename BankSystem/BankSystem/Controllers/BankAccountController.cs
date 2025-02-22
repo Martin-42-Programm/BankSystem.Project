@@ -17,7 +17,23 @@ public class BankAccountController : Controller
 
     public IActionResult Details()
     {
-        var model = _bankAccountService.GetAll().ToList();
+        
+        // var accounts = _bankAccountService.GetAll()
+        //     .Select(account => new
+        //     {
+        //         account.Id,
+        //         UserId = account.UserId != null ? account.UserId : "Unknown", // Avoiding ?? for compatibility
+        //        
+        //     })
+        //     .ToList();
+        
+        var query = _bankAccountService.GetAll().AsNoTracking();
+        
+        var model = query.AsEnumerable();
+        foreach (var account in model)
+        {
+            Console.WriteLine($"Account: {account.Id}");
+        }
         return View(model);
     }
 
@@ -38,12 +54,10 @@ public class BankAccountController : Controller
         var account = new BankAccountServiceModel
         {
             Type = type,
-            Currency = new Currency
-            {
-                CurrencyId = currency
-            },
+            Currency = currency,
             Balance = "0.0",
-            Id = Guid.NewGuid() // ✅ Use Guid.NewGuid() instead of new Guid()
+            Id = Guid.NewGuid(), // ✅ Use Guid.NewGuid() instead of new Guid()
+           // UserId = "00000000-0000-0000-0000-00000000000"
         };
 
         await _bankAccountService.AddAsync(account); // ✅ Ensure it's awaited.

@@ -2,6 +2,12 @@ namespace BankSystem.Services;
 
 public class OfficeService : IOfficeService
 {
+    private readonly OfficeRepository _repository;
+
+    public OfficeService(OfficeRepository officeRepository)
+    {
+        this._repository = officeRepository;
+    }
     public IQueryable<OfficeServiceModel> GetAll()
     {
         throw new NotImplementedException();
@@ -17,9 +23,12 @@ public class OfficeService : IOfficeService
         throw new NotImplementedException();
     }
 
-    public Task<OfficeServiceModel> AddAsync(OfficeServiceModel model)
+    public async Task<OfficeServiceModel> AddAsync(OfficeServiceModel model)
     {
-        throw new NotImplementedException();
+        if (model == null)
+            return new OfficeServiceModel();
+        await _repository.CreateAsync(model.ToEntity());
+        return model;
     }
 
     public Task<OfficeServiceModel> UpdateAsync(OfficeServiceModel model)

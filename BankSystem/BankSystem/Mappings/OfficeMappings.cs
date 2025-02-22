@@ -4,11 +4,23 @@ public static class OfficeMappings
 {
     public static Office ToEntity(this OfficeServiceModel model)
     {
-        throw new NotImplementedException();
+        return new Office()
+        {
+            Id = Guid.NewGuid(),
+            Address = model.Address,
+            City = model.City,
+            Country = model.Country,
+            Postcode = model.Postcode
+        };
     }
 
     public static OfficeServiceModel ToModel(this Office office)
     {
-        throw new NotImplementedException();
+        return new OfficeServiceModel(
+            office.Address,
+            office.City,
+            office.Country,
+            office.Postcode);
+        
     }
 }

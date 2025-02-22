@@ -3,12 +3,12 @@ using BankSystem.ServiceModels;
 
 namespace BankSystem.Services;
 
-public class BankBankAccountService : IBankAccountService
+public class BankAccountService : IBankAccountService
 
 {
     private readonly BankAccountRepository _repository;
 
-    public BankBankAccountService(BankAccountRepository repository)
+    public BankAccountService(BankAccountRepository repository)
     {
         this._repository = repository;
     }
@@ -53,10 +53,10 @@ public class BankBankAccountService : IBankAccountService
     
     private IQueryable<BankAccount> InternalGetAll()
     {
-        return this._repository.GetAll()
-            .Include(r => r.CreatedBy)
-            .Include(r => r.ModifiedBy)
-            .Include(r => r.DeletedBy);
+        return this._repository.GetAll();
+        // .Include(r => r.CreatedBy)
+        // .Include(r => r.ModifiedBy)
+        // .Include(r => r.DeletedBy);
     }
 
    

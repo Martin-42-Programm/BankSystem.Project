@@ -2,6 +2,14 @@ namespace BankSystem.Services;
 
 public class CurrencyService : ICurrencyService
 {
+    
+    private readonly CurrencyRepository _repository;
+
+    public CurrencyService(CurrencyRepository repository)
+    {
+        this._repository = repository;
+    }
+
     public IQueryable<CurrencyServiceModel> GetAll()
     {
         throw new NotImplementedException();
@@ -17,9 +25,13 @@ public class CurrencyService : ICurrencyService
         throw new NotImplementedException();
     }
 
-    public Task<CurrencyServiceModel> AddAsync(CurrencyServiceModel model)
+    public async Task<CurrencyServiceModel> AddAsync(CurrencyServiceModel model)
     {
-        throw new NotImplementedException();
+        if (model == null)
+            return new CurrencyServiceModel();
+        await _repository.CreateAsync(model.ToEntity());
+        
+        return model;
     }
 
     public Task<CurrencyServiceModel> UpdateAsync(CurrencyServiceModel model)

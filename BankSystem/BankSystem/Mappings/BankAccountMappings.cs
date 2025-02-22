@@ -9,11 +9,11 @@ public static class BankAccountMappings
         {
             Id = model.Id,                       // Map Guid Id
             Balance = double.Parse(model.Balance),             // Map Balance
-            CurrencyId = model.Currency?.CurrencyId, // Map CurrencyId (assuming Currency has a CurrencyId property)
-            Currency = model.Currency,          // Map Currency object
+            CurrencyId = model.Currency, // Map CurrencyId (assuming Currency has a CurrencyId property)
+           // Currency = model.Currency,          // Map Currency object
             Type = model.Type,                   // Map Type
-            UserId = model.User?.Id,             // Map UserId (assuming User has an Id property)
-            User = model.User                    // Map User object
+           // UserId = model.User?.Id,             // Map UserId (assuming User has an Id property)
+          //  User = model.User                    // Map User object
         };
     }
     
@@ -24,9 +24,10 @@ public static class BankAccountMappings
         {
             Id = entity.Id,                     // Map Guid Id
             Balance = entity.Balance.ToString(),           // Map Balance
-            Currency = entity.Currency,        // Map Currency object
+            Currency = entity.CurrencyId,        // Map Currency object
             Type = entity.Type,                 // Map Type
-            User = entity.User                  // Map User object
+           // User = entity.User,   
+         //   UserId = entity.UserId ?? "Unknown"// Map User object
         };
     }
 }

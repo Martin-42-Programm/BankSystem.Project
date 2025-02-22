@@ -6,7 +6,7 @@ public interface IBankAccountRepository
     void Update(BankAccount bankAccount);
     void Delete(BankAccount bankAccount);
 
-    IQueryable<BankAccount> GetAll();
+    IQueryable<BankAccountServiceModel> GetAll();
     
     BankAccount GetById(Guid id);
 }

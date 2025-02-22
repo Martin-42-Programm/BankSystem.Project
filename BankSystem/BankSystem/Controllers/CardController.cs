@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 public class CardController : Controller
 
 {
-    private CardRepository cardRepository;
+    private ICardService _cardService;
 
-    public CardController(CardRepository cardRepository)
+    public CardController(ICardService cardService)
     {
-        this.cardRepository = cardRepository;
+        this._cardService = cardService;
     }
     
 }

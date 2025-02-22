@@ -25,4 +25,9 @@
       <PackageReference Include="Pomelo.EntityFrameworkCore.MySql.NetTopologySuite" Version="9.0.0-preview.2.efcore.9.0.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Views\Card\" />
+      <Folder Include="Views\Transaction\" />
+    </ItemGroup>
+
 </Project>

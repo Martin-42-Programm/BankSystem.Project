@@ -10,19 +10,22 @@ public class BankAccount : MetadataBaseEntity
     [Key]
     public Guid Id { get; set; }
     
-    [ForeignKey("User")]
-    public string UserId { get; set; }
-    
+    [Required]
+    public string? UserId  { get; set; }
+    [ForeignKey("UserId")]
     public virtual User User { get; set; }
     
     public double Balance { get; set; }
     
     [ForeignKey("Currency")]
-    public string CurrencyId { get; set; }
+    public string? CurrencyId { get; set; }
     
     public virtual Currency Currency { get; set; }
     
     public string Type { get; set; }
-    
-    
+
+    public BankAccount()
+    {
+        
+    }
 }

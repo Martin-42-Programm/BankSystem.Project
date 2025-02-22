@@ -37,7 +37,7 @@ builder.Services.AddScoped<CurrencyRepository>();
 
 //Add services
 builder.Services.AddScoped<ITransactionService, TransactionService>();
-builder.Services.AddScoped<IBankAccountService, BankBankAccountService>();
+builder.Services.AddScoped<IBankAccountService, BankAccountService>();
 builder.Services.AddScoped<ICardService, CardService>();
 builder.Services.AddScoped<ICreditService, CreditService>();
 builder.Services.AddScoped<IOfficeService, OfficeService>();

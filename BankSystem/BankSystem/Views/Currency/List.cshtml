@@ -1,0 +1,46 @@
+@model List<CurrencyServiceModel>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>title</title>
+</head>
+<body>
+@if (Model != null && Model.Any())
+{
+    <table>
+        <thead>
+        <tr>
+            <th>Currency</th>
+            <th>Rate</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var currency in Model)
+        {
+            <tr>
+                <td>@(currency.Currency ?? "Unknown")</td>
+                <td>@(currency.ExchangeRate ?? "No Currency")</td>
+                <td>
+                    <form method="post" asp-action="Delete" asp-controller="BankAccount">
+                        <input type="hidden" name="id" value="@currency.Currency" />
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No currencies found.</p>
+}
+
+</body>
+</html>

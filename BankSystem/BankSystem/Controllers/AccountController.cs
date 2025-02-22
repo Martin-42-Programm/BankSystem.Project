@@ -47,6 +47,16 @@ public class AccountController : Controller
     {
         if (ModelState.IsValid)
         {
+            
+            var existingUser = await _userManager.FindByIdAsync(model.UserId);
+    
+            if (existingUser != null)
+            {
+                // User with the provided Id already exists, handle this case
+                ModelState.AddModelError("", "User with the given ID already exists.");
+                return View(model); // Return the same view with the error.
+            }
+
             var user = new User { UserName = model.Email, Email = model.Email };
             var result = await _userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
