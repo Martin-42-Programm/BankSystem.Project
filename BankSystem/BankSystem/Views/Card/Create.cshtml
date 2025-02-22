@@ -1,0 +1,41 @@
+@model Card
+@{
+    Layout = "_Layout";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Create New Card</title>
+</head>
+
+<body>
+<h2>New Card</h2>
+
+<form method="post" asp-action="Create" asp-controller="Card">
+    <p>
+        <label for="Type">Type:</label>
+        <select asp-for="Type" asp-items="ViewBag.Types" required>
+            <option value="">-- Select Currency --</option>
+        </select>
+    </p>
+
+    <button type="submit">Create</button>
+</form>
+
+<div>
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <ul>
+            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+            {
+                <li>@error.ErrorMessage</li>
+            }
+        </ul>
+    }
+</div>
+
+</body>
+
+</html>

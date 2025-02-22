@@ -32,7 +32,7 @@ public abstract class BaseGenericRepository<TEntity> : IGenericRepository<TEntit
 
     public virtual async Task<TEntity> EditAsync(TEntity entity)
     {
-        this.Context.Update(entity);
+        this.Context.Set<TEntity>().Update(entity);
         await this.Context.SaveChangesAsync();
         return entity;
     }

@@ -13,3 +13,4 @@ global using BankSystem.Services;
 
 global using Microsoft.EntityFrameworkCore;
 global using BankSystem.Views.Account;
+global using BankSystem.Data.Entities.Methods;

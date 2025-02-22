@@ -1,0 +1,46 @@
+@model CardServiceModel
+
+@{
+    ViewData["Title"] = "Card Details";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<table class="table table-bordered">
+    <tbody>
+    <tr>
+        <th>Card Type</th>
+        <td>@Model.Type</td>
+    </tr>
+    <tr>
+        <th>Card Number</th>
+        <td>@Model.Number</td>
+    </tr>
+    <tr>
+        <th>Expiration Date</th>
+        <td>@Model.ExpirationDate.ToString("MM/yyyy")</td>
+    </tr>
+    <tr>
+        <th>Status</th>
+        <td>
+            @if (Model.IsActive)
+            {
+                <span class="badge bg-success">Active</span>
+            }
+            else
+            {
+                <span class="badge bg-danger">Inactive</span>
+            }
+        </td>
+    </tr>
+    <tr>
+        <th>Card ID</th>
+        <td>@Model.Id</td>
+    </tr>
+    </tbody>
+</table>
+
+<a href="@Url.Action("Edit", "Card", new { id = Model.Id })" class="btn btn-warning">Edit</a>
+<a href="@Url.Action("List", "Card")" class="btn btn-secondary">Back to List</a>
+
+

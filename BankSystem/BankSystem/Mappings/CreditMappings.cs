@@ -2,7 +2,7 @@ namespace BankSystem.Mappings;
 
 public static class CreditMappings
 {
-    public static Credit ToEntity(this CardServiceModel model)
+    public static Credit ToEntity(this CreditServiceModel model)
     {
         throw new NotImplementedException();
     }

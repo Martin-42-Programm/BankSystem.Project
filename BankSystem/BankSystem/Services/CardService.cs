@@ -1,15 +1,23 @@
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+
 namespace BankSystem.Services;
 
 public class CardService : ICardService
 {
+    private readonly CardRepository _cardRepository;
+
+    public CardService(CardRepository cardRepository)
+    {
+        _cardRepository = cardRepository;
+    }
     public IQueryable<CardServiceModel> GetAll()
     {
-        throw new NotImplementedException();
+        return this.InternalGetAll().Select(c => c.ToModel());
     }
 
     public CardServiceModel GetById(object id)
     {
-        throw new NotImplementedException();
+        return _cardRepository.GetById(id).ToModel();
     }
 
     public Task<CardServiceModel> GetByIdAsync(string id)
@@ -17,18 +25,33 @@ public class CardService : ICardService
         throw new NotImplementedException();
     }
 
-    public Task<CardServiceModel> AddAsync(CardServiceModel model)
+    public async Task<CardServiceModel> AddAsync(CardServiceModel model)
     {
-        throw new NotImplementedException();
+        if (model == null)
+            return new CardServiceModel();
+        await _cardRepository.CreateAsync(model.ToEntity());
+        return model;
     }
 
-    public Task<CardServiceModel> UpdateAsync(CardServiceModel model)
+    public async Task<CardServiceModel> UpdateAsync(CardServiceModel model)
     {
+        //return await InternalUpdateAsync(model).Select(entity => entity.ToModel);
         throw new NotImplementedException();
     }
 
     public void DeleteAsync(string id)
     {
+        throw new NotImplementedException();
+    }
+
+    private IQueryable<Card> InternalGetAll()
+    {
+        return _cardRepository.GetAll();
+    }
+
+    private IQueryable<Card> InternalUpdateAsync(CardServiceModel model)
+    {
+        //return _cardRepository.EditAsync(model.ToEntity());
         throw new NotImplementedException();
     }
 }

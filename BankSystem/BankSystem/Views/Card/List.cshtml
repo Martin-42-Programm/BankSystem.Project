@@ -1,0 +1,48 @@
+@model List<CardServiceModel>
+
+@{
+    Layout = "_Layout";
+}
+
+@if (Model != null && Model.Any())
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Type</th>
+        
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var card in Model)
+        {
+            <tr>
+                <td>@(card.Type)</td>
+                <td>
+                    <form method="post" asp-action="Delete" asp-controller="Card">
+                        <input type="hidden" name="id" value="@card.Type" />
+                        @if (card.IsActive)
+                        {
+                            <button type="submit" asp-action="Switch" asp-controller="Card">Activate</button>
+                        }
+                        else
+                        {
+                            <button type="submit" asp-action="Switch" asp-controller="Card">Deactivate</button>
+                        }
+                    </form>
+                </td>
+                <td>
+                    <form method="post" asp-action="Delete" asp-controller="Card">
+                        <input type="hidden" name="id" value="@card.Type" />
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No offices found.</p>
+}
