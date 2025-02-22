@@ -26,11 +26,7 @@ public class ProjectDbContext : IdentityDbContext<User>
     public DbSet<WorkingTime> WorkingTimes { get; set; }
     
     public DbSet<Office> Offices { get; set; }
-    
-  //  public DbSet<Credit> Credits { get; set; }
-    
-    
-    
+     
     public ProjectDbContext(DbContextOptions<ProjectDbContext> options)
         : base(options)
     {
