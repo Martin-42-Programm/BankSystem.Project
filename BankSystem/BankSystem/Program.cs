@@ -13,19 +13,20 @@ string connectionString = builder
                           throw new InvalidDataException("No valid connection string!");
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages();
 
 builder.Services.AddDbContext<ProjectDbContext>(options =>
     options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 2))));
+
 
 
 // Add Identity services
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ProjectDbContext>();
 
-
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddScoped< AccountRepository>();
-builder.Services.AddScoped<AccountService>();
+builder.Services.AddScoped<AccountRepository>();
+builder.Services.AddScoped<IAccountService, AccountService>();
 
 
 
@@ -42,6 +43,7 @@ using (var serviceScope = app.Services.CreateScope())
 {
 
 
+    
     app.UseHttpsRedirection();
     app.UseRouting();
 
@@ -57,3 +59,4 @@ using (var serviceScope = app.Services.CreateScope())
 
     app.Run();
 }
+

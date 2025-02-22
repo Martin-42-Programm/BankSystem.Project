@@ -2,27 +2,31 @@ namespace BankSystem.Mappings;
 
 public static class AccountMappings
 {
+    // Map from AccountServiceModel to Account entity
     public static Account ToEntity(this AccountServiceModel model)
     {
         return new Account()
         {
-            Id = model.Id,
-            Balance = model.Balance,
-            Currency = model.Currency,
-            Type = model.Type,
-            User = model.User
+            Id = model.Id,                       // Map Guid Id
+            Balance = double.Parse(model.Balance),             // Map Balance
+            CurrencyId = model.Currency?.CurrencyId, // Map CurrencyId (assuming Currency has a CurrencyId property)
+            Currency = model.Currency,          // Map Currency object
+            Type = model.Type,                   // Map Type
+            UserId = model.User?.Id,             // Map UserId (assuming User has an Id property)
+            User = model.User                    // Map User object
         };
     }
     
+    // Map from Account entity to AccountServiceModel
     public static AccountServiceModel ToModel(this Account entity)
     {
-    
         return new AccountServiceModel
         {
-            Id = entity.Id,
-            Type = entity.Type,
-            Balance = entity.Balance,
-            
+            Id = entity.Id,                     // Map Guid Id
+            Balance = entity.Balance.ToString(),           // Map Balance
+            Currency = entity.Currency,        // Map Currency object
+            Type = entity.Type,                 // Map Type
+            User = entity.User                  // Map User object
         };
     }
 }

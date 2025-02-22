@@ -6,7 +6,7 @@ public interface IAccountRepository
     void Update(Account account);
     void Delete(Account account);
 
-    List<Account> GetAll();
+    IQueryable<Account> GetAll();
     
     Account GetById(Guid id);
 }

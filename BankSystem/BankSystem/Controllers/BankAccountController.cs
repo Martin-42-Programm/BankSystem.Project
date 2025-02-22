@@ -4,18 +4,19 @@ namespace BankSystem.Controllers;
 
 public class BankAccountController : Controller
 {
-    private AccountService accountService;
+    private IAccountService accountService;
+    private ICurrencyService currencyService;
 
-    public BankAccountController(AccountService accountService)
+    public BankAccountController(IAccountService accountService)
     {
         this.accountService = accountService;
     }
 
     public IActionResult Details()
     {
-        
-        
-        return View();
+
+        var model = accountService.GetAll().ToList();
+        return View(model);
     }
 
     public IActionResult Create()
@@ -23,12 +24,21 @@ public class BankAccountController : Controller
         return View();
     }
     [HttpPost]
-    public IActionResult Create(AccountServiceModel BankAccount)
+    public IActionResult Create(string type, string currency)
     {
+        var account = new AccountServiceModel
+        {
+            Type = type,
+            Currency = new Currency
+            {
+                CurrencyId = currency
+            },
+            Balance = "0.0",
+            Id = new Guid(),
+        };
 
-        if (BankAccount == null)
-           return View(nameof(Create));
-        accountService.AddAsync(BankAccount);
+        
+        accountService.AddAsync(account);
 
         return RedirectToAction(nameof(Details));
     }

@@ -4,18 +4,19 @@ namespace BankSystem.Repositories;
 
 public class AccountRepository : MetadataBaseGenericRepository<Account>
 {
+    //private readonly ProjectDbContext _context;
+    
     public AccountRepository(ProjectDbContext context, IHttpContextAccessor httpContextAccessor) : base(context,
         httpContextAccessor)
     {
         
     }
+    //public AccountRepository(ProjectDbContext context) => _context = context;
     
-    /*public AccountRepository(ProjectDbContext context) => _context = context;
-    
-    public void Add(Account entity)
+    /*public void Add(Account entity)
     {
-         this._context.Accounts.Add(entity);
-         this._context.SaveChanges();
+         this.Context.Accounts.Add(entity);
+         this.Context.SaveChanges();
         
     }
 
@@ -35,17 +36,17 @@ public class AccountRepository : MetadataBaseGenericRepository<Account>
         return this._context.Accounts.Find(id);
     }
 
-    public List<Account> GetAll()
+    public IQueryable<Account> GetAll()
     {
         //TODO: Sorting the lists
         //TODO: IEnumerable
-        return this._context.Accounts.ToList();
+        return this._context.Accounts.ToList().AsQueryable();
     }
 
     
 
-
 */
+
 
 
 

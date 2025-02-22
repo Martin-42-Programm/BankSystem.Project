@@ -3,7 +3,7 @@
 @{
     Layout = null;
 }
-@inject Account _Account
+@model List<AccountServiceModel>
 
 <!DOCTYPE html>
 
@@ -13,8 +13,13 @@
 </head>
 <body>
 
-<div>
+<p1>this is probably working</p1>
 
-</div>
+@foreach (var account in Model)
+{
+    <p>@account.Type, @account.Balance</p>
+}
+
+
 </body>
 </html>
