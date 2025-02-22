@@ -1,0 +1,48 @@
+@{
+    Layout = "_Layout";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>New Transaction</title>
+</head>
+
+<body>
+<h2>NewTransaction</h2>
+
+<form method="post" asp-action="Create" asp-controller="Transaction">
+    <p>
+        <label>Recipient:</label>
+        <input type="text" name="recieverId" placeholder="000000000-000000-000000-00000000" required />
+    </p>
+
+    <p>
+        <label>Amount:</label>
+        <input type="number" name="amount" placeholder="25 BGN" required />
+    </p>
+    <p>
+        <label>Type:</label>
+        <input type="text" name="type" placeholder="transfer" required />
+    </p>
+    
+
+    <button type="submit">Create</button>
+</form>
+
+<div>
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <ul>
+            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+            {
+                <li>@error.ErrorMessage</li>
+            }
+        </ul>
+    }
+</div>
+
+</body>
+
+</html>

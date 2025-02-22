@@ -12,7 +12,7 @@ public class CurrencyService : ICurrencyService
 
     public IQueryable<CurrencyServiceModel> GetAll()
     {
-        throw new NotImplementedException();
+        return this.InternalGetAll().Select(entity => entity.ToModel());
     }
 
     public CurrencyServiceModel GetById(object id)
@@ -42,5 +42,10 @@ public class CurrencyService : ICurrencyService
     public void DeleteAsync(string id)
     {
         throw new NotImplementedException();
+    }
+
+    private IQueryable<Currency> InternalGetAll()
+    {
+        return _repository.GetAll();
     }
 }

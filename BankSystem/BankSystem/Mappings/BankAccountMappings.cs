@@ -12,7 +12,7 @@ public static class BankAccountMappings
             CurrencyId = model.Currency, // Map CurrencyId (assuming Currency has a CurrencyId property)
            // Currency = model.Currency,          // Map Currency object
             Type = model.Type,                   // Map Type
-           // UserId = model.User?.Id,             // Map UserId (assuming User has an Id property)
+            UserId = "00000000-0000-0000-0000-000000000006",             // Map UserId (assuming User has an Id property)
           //  User = model.User                    // Map User object
         };
     }

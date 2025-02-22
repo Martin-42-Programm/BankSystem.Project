@@ -18,9 +18,10 @@ public static class OfficeMappings
     {
         return new OfficeServiceModel(
             office.Address,
+            office.Postcode,
             office.City,
-            office.Country,
-            office.Postcode);
+            office.Country
+            );
         
     }
 }

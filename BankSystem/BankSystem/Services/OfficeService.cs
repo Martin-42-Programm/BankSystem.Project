@@ -10,7 +10,7 @@ public class OfficeService : IOfficeService
     }
     public IQueryable<OfficeServiceModel> GetAll()
     {
-        throw new NotImplementedException();
+        return this.InternalGetAll().Select(c => c.ToModel());
     }
 
     public OfficeServiceModel GetById(object id)
@@ -39,5 +39,10 @@ public class OfficeService : IOfficeService
     public void DeleteAsync(string id)
     {
         throw new NotImplementedException();
+    }
+
+    private IQueryable<Office> InternalGetAll()
+    {
+        return _repository.GetAll();
     }
 }

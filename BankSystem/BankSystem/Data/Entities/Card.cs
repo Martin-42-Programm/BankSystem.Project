@@ -16,6 +16,7 @@ public class Card : MetadataBaseEntity
     public string Type { get; set; }
     public DateTime ExpirationDate { get; set; }
     public string SecretCode { get; set; }
+    public bool IsActive { get; set; }
     
     
     

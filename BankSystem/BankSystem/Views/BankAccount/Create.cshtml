@@ -20,8 +20,10 @@
     </p>
 
     <p>
-        <label>Currency:</label>
-        <input type="text" name="currency" placeholder="e.g., USD" required />
+        <label for="Currency">Currency:</label>
+        <select asp-for="Currency" asp-items="ViewBag.Currencies" required>
+            <option value="">-- Select Currency --</option>
+        </select>
     </p>
 
     <button type="submit">Create</button>

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using BankSystem.Services;
 using BankSystem.ServiceModels;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BankSystem.Controllers;
 
@@ -17,28 +18,23 @@ public class BankAccountController : Controller
 
     public IActionResult Details()
     {
-        
-        // var accounts = _bankAccountService.GetAll()
-        //     .Select(account => new
-        //     {
-        //         account.Id,
-        //         UserId = account.UserId != null ? account.UserId : "Unknown", // Avoiding ?? for compatibility
-        //        
-        //     })
-        //     .ToList();
-        
         var query = _bankAccountService.GetAll().AsNoTracking();
         
         var model = query.AsEnumerable();
-        foreach (var account in model)
-        {
-            Console.WriteLine($"Account: {account.Id}");
-        }
+        
         return View(model);
     }
 
     public IActionResult Create()
     {
+        var currencies = _currencyService.GetAll().AsEnumerable()
+            .Select(c => new SelectListItem
+            {
+                Value = c.Currency,    // Currency code (e.g., "USD")
+                Text = c.Currency      // Currency name (e.g., "US Dollar")
+            }).ToList();
+        //TODO: Multiple choice for type of bankaccount
+        ViewBag.Currencies = currencies; // Pass to the view
         return View();
     }
 

@@ -100,6 +100,9 @@ namespace BankSystem.Migrations
                     b.Property<DateTime>("ExpirationDate")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<string>("ModifiedById")
                         .HasColumnType("varchar(255)");
 
@@ -246,9 +249,6 @@ namespace BankSystem.Migrations
                     b.Property<string>("Currency")
                         .IsRequired()
                         .HasColumnType("longtext");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("DeletedById")
                         .HasColumnType("varchar(255)");

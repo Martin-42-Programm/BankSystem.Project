@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BankSystem.Migrations
 {
     [DbContext(typeof(ProjectDbContext))]
-    [Migration("20250222105622_Userrefactoring")]
-    partial class Userrefactoring
+    [Migration("20250222181357_NewInitial")]
+    partial class NewInitial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -41,7 +41,6 @@ namespace BankSystem.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("CurrencyId")
-                        .IsRequired()
                         .HasColumnType("varchar(255)");
 
                     b.Property<string>("DeletedById")
@@ -103,6 +102,9 @@ namespace BankSystem.Migrations
 
                     b.Property<DateTime>("ExpirationDate")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("ModifiedById")
                         .HasColumnType("varchar(255)");
@@ -251,9 +253,6 @@ namespace BankSystem.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime(6)");
-
                     b.Property<string>("DeletedById")
                         .HasColumnType("varchar(255)");
 
@@ -319,7 +318,6 @@ namespace BankSystem.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Address")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -327,7 +325,6 @@ namespace BankSystem.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("EGN")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Email")
@@ -338,19 +335,15 @@ namespace BankSystem.Migrations
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("FathersName")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("IDNumber")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<bool>("LockoutEnabled")
@@ -371,7 +364,6 @@ namespace BankSystem.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("Phone")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("PhoneNumber")
@@ -626,8 +618,7 @@ namespace BankSystem.Migrations
                     b.HasOne("BankSystem.Data.Entities.Currency", "Currency")
                         .WithMany()
                         .HasForeignKey("CurrencyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("BankSystem.Data.Entities.User", "DeletedBy")
                         .WithMany()

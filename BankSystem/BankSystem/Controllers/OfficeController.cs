@@ -10,6 +10,16 @@ public class OfficeController : Controller
     {
         this.officeService = officeService;
     }
+
+    public IActionResult List()
+    {
+            var query = officeService.GetAll().AsNoTracking();
+        
+            var model = query.ToList();
+        
+            return View(model);
+        
+    }
     public IActionResult Create()
     {
         return View();

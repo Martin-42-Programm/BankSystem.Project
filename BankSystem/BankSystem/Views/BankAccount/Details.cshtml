@@ -1,8 +1,11 @@
 @model IEnumerable<BankAccountServiceModel>
+@{
+    Layout = "_Layout";
+}
 
 @if (Model != null && Model.Any())
 {
-    <table>
+    <table class="table">
         <thead>
         <tr>
             <th>Type</th>

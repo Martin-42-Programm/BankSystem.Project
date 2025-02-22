@@ -17,7 +17,7 @@ public class Transaction : MetadataBaseEntity
     
     public BankAccount ReceiverBankAccount { get; set; }
 
-    public DateTime Date { get; set; }
+   // public DateTime Date { get; set; }
     public decimal Amount { get; set; }
     
     [ForeignKey("Currency")]
