@@ -1,4 +1,5 @@
 using BankSystem.Data.Entities;
+using Humanizer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -29,6 +30,7 @@ public class ProjectDbContext : IdentityDbContext<User>
     
     public DbSet<CreditRequest> CreditRequests { get; set; }
     public DbSet<CreditManagement> CreditManagements { get; set; }
+    public DbSet<Notification> Notifications { get; set; }
      
     public ProjectDbContext(DbContextOptions<ProjectDbContext> options)
         : base(options)

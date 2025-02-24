@@ -39,7 +39,9 @@ public abstract class BaseGenericRepository<TEntity> : IGenericRepository<TEntit
 
     public virtual async Task<TEntity> DeleteAsync(TEntity entity)
     {
-        this.Context.Remove(entity);
+        Context.ChangeTracker.Clear();
+        this.Context.Set<TEntity>().Remove(entity);
+        //this.Context.Remove(entity);
         await this.Context.SaveChangesAsync();
         return entity;
     }
@@ -47,5 +49,10 @@ public abstract class BaseGenericRepository<TEntity> : IGenericRepository<TEntit
     public virtual TEntity GetById(object id)
     {
         return this.Context.Set<TEntity>().Find(id);
+    }
+    
+    public virtual async Task<TEntity> GetByIdAsync(object id)
+    {
+        return await this.Context.Set<TEntity>().FindAsync(id);
     }
 }

@@ -14,3 +14,6 @@ global using BankSystem.Services;
 global using Microsoft.EntityFrameworkCore;
 global using BankSystem.Views.Account;
 global using BankSystem.Data.Entities.Methods;
+global using BankSystem.Services.NotificationServices;
+global using Microsoft.AspNetCore.SignalR.Client;
+global using Microsoft.AspNetCore.SignalR;

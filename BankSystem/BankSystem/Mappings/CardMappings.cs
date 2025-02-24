@@ -7,7 +7,7 @@ public static class CardMappings
         Random random = new Random();
         return new Card()
         {
-            Id = Guid.NewGuid(),
+            Id = Guid.TryParse(model.Id, out Guid parsedId) ? parsedId : Guid.NewGuid(),
             Type = model.Type,
             CardholderId = "00000000-0000-0000-0000-000000000006",
             SecretCode = random.Next(100, 999).ToString(),

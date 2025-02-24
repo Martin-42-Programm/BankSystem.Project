@@ -32,11 +32,11 @@ where TEntity : MetadataBaseEntity
         
     }
     
-    public override async Task<TEntity> DeleteAsync(TEntity entity)
+    public override  async Task<TEntity> DeleteAsync(TEntity entity)
     {
         entity.DeletedDate = DateTime.UtcNow;
         entity.DeletedBy = await this.GetCurrentUser();
-        return await base.DeleteAsync(entity);
+        return  await base.DeleteAsync(entity);
     }
 
     protected async Task<User> GetCurrentUser()

@@ -36,7 +36,7 @@ public class OfficeService : IOfficeService
         throw new NotImplementedException();
     }
 
-    public void DeleteAsync(string id)
+    public Task<OfficeServiceModel> DeleteAsync(string id)
     {
         throw new NotImplementedException();
     }

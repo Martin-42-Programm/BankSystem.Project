@@ -36,7 +36,7 @@ public class TransactionService : ITransactionService
         throw new NotImplementedException();
     }
 
-    public void DeleteAsync(string id)
+    public Task<TransactionServiceModel> DeleteAsync(string id)
     {
         throw new NotImplementedException();
     }

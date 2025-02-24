@@ -2,32 +2,32 @@ namespace BankSystem.Services;
 
 public class CreditService : ICreditService
 {
-    public IQueryable<CardServiceModel> GetAll()
+    public IQueryable<CreditServiceModel> GetAll()
     {
         throw new NotImplementedException();
     }
 
-    public CardServiceModel GetById(object id)
+    public CreditServiceModel GetById(object id)
     {
         throw new NotImplementedException();
     }
 
-    public Task<CardServiceModel> GetByIdAsync(string id)
+    public Task<CreditServiceModel> GetByIdAsync(string id)
     {
         throw new NotImplementedException();
     }
 
-    public Task<CardServiceModel> AddAsync(CardServiceModel model)
+    public Task<CreditServiceModel> AddAsync(CreditServiceModel model)
     {
         throw new NotImplementedException();
     }
 
-    public Task<CardServiceModel> UpdateAsync(CardServiceModel model)
+    public Task<CreditServiceModel> UpdateAsync(CreditServiceModel model)
     {
         throw new NotImplementedException();
     }
 
-    public void DeleteAsync(string id)
+    public Task<CreditServiceModel> DeleteAsync(string id)
     {
         throw new NotImplementedException();
     }

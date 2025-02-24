@@ -39,7 +39,7 @@ public class CurrencyService : ICurrencyService
         throw new NotImplementedException();
     }
 
-    public void DeleteAsync(string id)
+    public Task<CurrencyServiceModel> DeleteAsync(string id)
     {
         throw new NotImplementedException();
     }

@@ -7,5 +7,5 @@ public interface IGenericService<TEntity, TModel>
     Task<TModel> GetByIdAsync(string id);
     Task<TModel> AddAsync(TModel model);
     Task<TModel> UpdateAsync(TModel model);
-    void DeleteAsync(string id);
+    Task<TModel> DeleteAsync(string id);
 }

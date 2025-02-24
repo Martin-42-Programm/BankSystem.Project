@@ -8,6 +8,9 @@
 
 <head>
     <title>Create New Card</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.min.js"></script>
+    <script src="~/js/signalr-notifications.js"></script>
+
 </head>
 
 <body>
@@ -17,7 +20,7 @@
     <p>
         <label for="Type">Type:</label>
         <select asp-for="Type" asp-items="ViewBag.Types" required>
-            <option value="">-- Select Currency --</option>
+            <option value="">-- Select Card --</option>
         </select>
     </p>
 
@@ -35,6 +38,27 @@
         </ul>
     }
 </div>
+
+<!-- Notification Section -->
+<div id="notification" style="margin-top: 20px; color: green;"></div>
+
+<script>
+    // Connect to the SignalR Notification Hub
+    const connection = new signalR.HubConnectionBuilder()
+        .withUrl("https://localhost:5204/notificationHub")
+        .configureLogging()
+        .build();
+
+    connection.on("ReceiveNotification", (message) => {
+        const notificationDiv = document.getElementById("notification");
+        notificationDiv.innerHTML = message;
+        setTimeout(() => notificationDiv.innerHTML = "", 5000);
+    });
+
+    connection.start().catch(err => console.error(err));
+</script>
+
+
 
 </body>
 

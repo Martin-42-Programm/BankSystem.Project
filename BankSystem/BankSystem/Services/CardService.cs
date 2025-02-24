@@ -15,14 +15,20 @@ public class CardService : ICardService
         return this.InternalGetAll().Select(c => c.ToModel());
     }
 
-    public CardServiceModel GetById(object id)
+    public IQueryable<CardServiceModel> GetAllAsNoTracking()
     {
-        return _cardRepository.GetById(id).ToModel();
+        return _cardRepository.GetAllAsNoTracking().Select(c => c.ToModel());
     }
 
-    public Task<CardServiceModel> GetByIdAsync(string id)
+    public CardServiceModel GetById(object id)
     {
-        throw new NotImplementedException();
+        return _cardRepository.GetById(Guid.Parse((string)id)).ToModel();
+    }
+
+    public async  Task<CardServiceModel> GetByIdAsync(string id)
+    {
+        var entity = await _cardRepository.GetByIdAsync(Guid.Parse(id));
+        return entity.ToModel();
     }
 
     public async Task<CardServiceModel> AddAsync(CardServiceModel model)
@@ -35,13 +41,19 @@ public class CardService : ICardService
 
     public async Task<CardServiceModel> UpdateAsync(CardServiceModel model)
     {
-        //return await InternalUpdateAsync(model).Select(entity => entity.ToModel);
-        throw new NotImplementedException();
+        var updatedEntity = await InternalUpdateAsync(model);
+        return updatedEntity.ToModel();
+        
     }
 
-    public void DeleteAsync(string id)
+    public async Task<CardServiceModel> DeleteAsync(string id)
     {
-        throw new NotImplementedException();
+        var card = _cardRepository.GetById(Guid.Parse(id));
+        if (card == null)
+            throw new KeyNotFoundException();
+        var model = await _cardRepository.DeleteAsync(card);
+        return model.ToModel();
+        
     }
 
     private IQueryable<Card> InternalGetAll()
@@ -49,9 +61,8 @@ public class CardService : ICardService
         return _cardRepository.GetAll();
     }
 
-    private IQueryable<Card> InternalUpdateAsync(CardServiceModel model)
+    private async Task<Card> InternalUpdateAsync(CardServiceModel model)
     {
-        //return _cardRepository.EditAsync(model.ToEntity());
-        throw new NotImplementedException();
+        return await _cardRepository.EditAsync(model.ToEntity());
     }
 }

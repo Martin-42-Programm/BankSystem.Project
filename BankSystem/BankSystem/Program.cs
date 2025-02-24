@@ -33,6 +33,7 @@ builder.Services.AddScoped<TransactionRepository>();
 builder.Services.AddScoped<CreditRepository>();
 builder.Services.AddScoped<OfficeRepository>();
 builder.Services.AddScoped<CurrencyRepository>();
+builder.Services.AddScoped<NotificationRepository>();
 
 
 //Add services
@@ -42,8 +43,21 @@ builder.Services.AddScoped<ICardService, CardService>();
 builder.Services.AddScoped<ICreditService, CreditService>();
 builder.Services.AddScoped<IOfficeService, OfficeService>();
 builder.Services.AddScoped<ICurrencyService, CurrencyService>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
 
+builder.Services.AddSignalR();
 
+/*builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        b =>
+        {
+            b.WithOrigins("https://localhost:5204")
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials();
+        });
+});*/
 
 var app = builder.Build();
 
@@ -63,7 +77,8 @@ using (var serviceScope = app.Services.CreateScope())
     app.UseRouting();
     app.MapControllers();
     app.MapRazorPages();  
-
+ //   app.UseCors("AllowAll");
+    app.MapHub<NotificationHub>("/notificationHub");
     app.UseAuthentication(); // Add this line
     app.UseAuthorization();
 

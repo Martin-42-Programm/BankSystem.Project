@@ -1,6 +1,6 @@
 namespace BankSystem.Services;
 
-public interface ICreditService : IGenericService<Credit, CardServiceModel>
+public interface ICreditService : IGenericService<Credit, CreditServiceModel>
 {
     
 }

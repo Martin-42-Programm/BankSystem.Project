@@ -14,7 +14,7 @@
     </tr>
     <tr>
         <th>Card Number</th>
-        <td>@Model.Number</td>
+        <td>@string.Join(" ", Enumerable.Range(0, Model.Number.Length / 4).Select(i => Model.Number.Substring(i * 4, Math.Min(4, @Model.Number.Length - i * 4))))</td>
     </tr>
     <tr>
         <th>Expiration Date</th>
@@ -33,10 +33,7 @@
             }
         </td>
     </tr>
-    <tr>
-        <th>Card ID</th>
-        <td>@Model.Id</td>
-    </tr>
+    
     </tbody>
 </table>
 

@@ -9,4 +9,9 @@ public class CardServiceModel
     public string Id { get; set; }
     
     public DateTime ExpirationDate { get; set; }
+
+    public CardServiceModel()
+    {
+        
+    }
 }

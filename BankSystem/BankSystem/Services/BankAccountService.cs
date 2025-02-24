@@ -42,7 +42,7 @@ public class BankAccountService : IBankAccountService
         throw new System.NotImplementedException();
     }
 
-    public void DeleteAsync(string id)
+    public Task<BankAccountServiceModel> DeleteAsync(string id)
     {
         throw new System.NotImplementedException();
     }
