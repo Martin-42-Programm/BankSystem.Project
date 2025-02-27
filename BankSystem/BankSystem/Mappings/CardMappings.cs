@@ -13,7 +13,6 @@ public static class CardMappings
             SecretCode = random.Next(100, 999).ToString(),
             IsActive = model.IsActive,
             ExpirationDate = model.ExpirationDate,
-            //TODO: make this number unique
             Number = model.Number,
             PickupOffice = model.PickupOffice,
             Pseudonym = model.Pseudonym

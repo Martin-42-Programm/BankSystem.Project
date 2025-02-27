@@ -16,7 +16,7 @@ public class User : IdentityUser
     
     public User()
     {
-        Id = Guid.NewGuid().ToString();
+       // Id = Guid.NewGuid().ToString();
         
     }
 }
