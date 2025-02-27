@@ -7,7 +7,7 @@ public static class NotificationMappings
         return new Notification()
         { 
             Id = Guid.NewGuid(),
-            UserId = Guid.Parse(model.UserId), 
+            UserId = model.UserId, 
             Message = model.Message
            
         };

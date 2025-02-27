@@ -1,7 +1,7 @@
 @model CardServiceModel
 
 @{
-    ViewData["Title"] = "Card Details";
+    ViewData["Title"] = $"{Model.Pseudonym} Details";
 }
 
 <h2>@ViewData["Title"]</h2>
@@ -33,11 +33,11 @@
             }
         </td>
     </tr>
-    
+
     </tbody>
 </table>
 
-<a href="@Url.Action("Edit", "Card", new { id = Model.Id })" class="btn btn-warning">Edit</a>
+<a href="@Url.Action("Edit", "Card", new { id = Model.Number })" class="btn btn-warning">Add pseudonym</a>
 <a href="@Url.Action("List", "Card")" class="btn btn-secondary">Back to List</a>
 
 

@@ -47,7 +47,7 @@ builder.Services.AddScoped<INotificationService, NotificationService>();
 
 builder.Services.AddSignalR();
 
-/*builder.Services.AddCors(options =>
+builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll",
         b =>
@@ -57,7 +57,7 @@ builder.Services.AddSignalR();
                 .AllowAnyMethod()
                 .AllowCredentials();
         });
-});*/
+});
 
 var app = builder.Build();
 
@@ -77,7 +77,7 @@ using (var serviceScope = app.Services.CreateScope())
     app.UseRouting();
     app.MapControllers();
     app.MapRazorPages();  
- //   app.UseCors("AllowAll");
+    app.UseCors("AllowAll");
     app.MapHub<NotificationHub>("/notificationHub");
     app.UseAuthentication(); // Add this line
     app.UseAuthorization();

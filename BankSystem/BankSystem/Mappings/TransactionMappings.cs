@@ -7,9 +7,12 @@ public static class TransactionMappings
         return new Transaction()
         { 
             Id = Guid.Parse(model.TransactionId),
-            ReceiverAccountId = Guid.Parse(model.ReceiverId),
+            ReceiverAccountId = model.ReceiverId,
             Amount = model.Amount,
-            Type = model.Type
+            Type = model.Type,
+            Currency = model.Currency,
+            Status = "Working on",
+            SenderAccountId = Guid.Parse(model.SenderId)
         };
     }
     
@@ -22,6 +25,8 @@ public static class TransactionMappings
             Amount = entity.Amount,
             Type = entity.Type,
             TransactionId = entity.Id.ToString(),
+            Currency = entity.Currency,
+            SenderId = entity.SenderAccountId.ToString(),
         };
     }
 }

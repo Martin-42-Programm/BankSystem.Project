@@ -10,7 +10,7 @@ public class TransactionService : ITransactionService
     }
     public IQueryable<TransactionServiceModel> GetAll()
     {
-        throw new NotImplementedException();
+        return this.InternalGetAll().Select(c => c.ToModel());
     }
 
     public TransactionServiceModel GetById(object id)
@@ -25,19 +25,30 @@ public class TransactionService : ITransactionService
 
     public async Task<TransactionServiceModel> AddAsync(TransactionServiceModel model)
     {
-        if (model == null)
-            return new TransactionServiceModel();
+       
         await _transactionRepository.CreateAsync(model.ToEntity());
         return model;
     }
 
-    public Task<TransactionServiceModel> UpdateAsync(TransactionServiceModel model)
+    public async Task<TransactionServiceModel> UpdateAsync(TransactionServiceModel model)
     {
-        throw new NotImplementedException();
+            var updatedEntity = await InternalUpdateAsync(model);
+            return updatedEntity.ToModel();
+        
     }
 
     public Task<TransactionServiceModel> DeleteAsync(string id)
     {
         throw new NotImplementedException();
+    }
+    
+    private IQueryable<Transaction> InternalGetAll()
+    {
+        return _transactionRepository.GetAll();
+    }
+    
+    private async Task<Transaction> InternalUpdateAsync(TransactionServiceModel model)
+    {
+        return await _transactionRepository.EditAsync(model.ToEntity());
     }
 }

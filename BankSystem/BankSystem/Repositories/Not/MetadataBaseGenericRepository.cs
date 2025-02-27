@@ -19,14 +19,14 @@ where TEntity : MetadataBaseEntity
     
     public override async Task<TEntity> CreateAsync(TEntity entity)
     {
-        entity.CreatedDate = DateTime.UtcNow;
+        entity.CreatedDate = DateTime.UtcNow.AddHours(2);
         entity.CreatedBy = await this.GetCurrentUser();
         return await base.CreateAsync(entity);
     }
     
     public override async Task<TEntity> EditAsync(TEntity entity)
     {
-        entity.ModifiedDate = DateTime.UtcNow;
+        entity.ModifiedDate = DateTime.UtcNow.AddHours(2);
         entity.ModifiedBy = await this.GetCurrentUser();
         return await base.EditAsync(entity);
         
@@ -34,7 +34,7 @@ where TEntity : MetadataBaseEntity
     
     public override  async Task<TEntity> DeleteAsync(TEntity entity)
     {
-        entity.DeletedDate = DateTime.UtcNow;
+        entity.DeletedDate = DateTime.UtcNow.AddHours(2);
         entity.DeletedBy = await this.GetCurrentUser();
         return  await base.DeleteAsync(entity);
     }

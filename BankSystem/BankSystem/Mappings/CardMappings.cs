@@ -7,14 +7,16 @@ public static class CardMappings
         Random random = new Random();
         return new Card()
         {
-            Id = Guid.TryParse(model.Id, out Guid parsedId) ? parsedId : Guid.NewGuid(),
+           // Id = Guid.TryParse(model.Id, out Guid parsedId) ? parsedId : Guid.NewGuid(),
             Type = model.Type,
             CardholderId = "00000000-0000-0000-0000-000000000006",
             SecretCode = random.Next(100, 999).ToString(),
             IsActive = model.IsActive,
             ExpirationDate = model.ExpirationDate,
             //TODO: make this number unique
-            Number = model.Number
+            Number = model.Number,
+            PickupOffice = model.PickupOffice,
+            Pseudonym = model.Pseudonym
         };
     }
 
@@ -22,12 +24,14 @@ public static class CardMappings
     {
         return new CardServiceModel()
         {
-            Id = entity.Id.ToString(),
+            //Id = entity.Id.ToString(),
             Type = entity.Type,
            // Pseudonym = entity.CardholderId,
             Number = entity.Number,
             IsActive = entity.IsActive,
             ExpirationDate = entity.ExpirationDate,
+            PickupOffice = entity.PickupOffice,
+            Pseudonym = entity.Pseudonym
         };
     }
 }

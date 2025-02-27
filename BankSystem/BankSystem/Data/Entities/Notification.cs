@@ -1,10 +1,13 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace BankSystem.Data.Entities;
 
 public class Notification : MetadataBaseEntity
 {
     public Guid Id { get; set; }
-    public Guid UserId { get; set; }
-    public User User { get; set; }
+    [ForeignKey("User")]
+    public string UserId { get; set; }
+    public virtual User User { get; set; }
     public string Message { get; set; }
     
 
@@ -16,7 +19,7 @@ public class Notification : MetadataBaseEntity
     public Notification(Guid userId, string message)
     {
         Id = Guid.NewGuid();
-        UserId = userId;
+        UserId = userId.ToString();
         Message = message;
     }
 

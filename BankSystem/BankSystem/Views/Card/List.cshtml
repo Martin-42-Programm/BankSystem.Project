@@ -13,12 +13,28 @@
 
     <!-- Add Bootstrap for styling -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.min.js"></script>-->
+    
+
 </head>
 
 <body>
     <div class="container my-4">
         <h2 class="text-center">Card Management</h2>
+        <script>
+            let connection;
+            connection = new signalR.HubConnection().withUrl("http://localhost:5204/notificationHub")
+                .configureLogging(signalR.LogLevel.Information) // Enable detailed logging
+                .build();
+            connection.start()
+                .then(() => console.log("Connected to SignalR hub"))
+                .catch(err => console.error("Error connecting to hub: ", err));
+
+            connection.on("ReceiveNotification", (message) => {
+                console.log("Notification received:", message);
+                alert("Notification: " + message);
+            });
+        </script>
 
         @if (Model != null && Model.Any())
         {
@@ -36,7 +52,7 @@
                     {
                         <tr>
                             <td>
-                                <a class="nav-link text-dark" asp-controller="Card" asp-action="CardDetails" asp-route-id="@card.Id" title="Manage">
+                                <a class="nav-link text-dark" asp-controller="Card" asp-action="CardDetails" asp-route-id="@card.Number" title="Manage">
                                     @card.Type
                                 </a>
                             </td>
@@ -52,7 +68,7 @@
                             </td>
                             <td>
                                 <form method="post" asp-action="Switch" asp-controller="Card" class="d-inline">
-                                    <input type="hidden" name="id" value="@card.Id" />
+                                    <input type="hidden" name="id" value="@card.Number" />
                                     @if (card.IsActive)
                                     {
                                         <button type="submit" class="btn btn-danger">Deactivate</button>
@@ -65,7 +81,7 @@
                             </td>
                             <td>
                                 <form method="post" asp-controller="Card" asp-action="Delete" onsubmit="return confirm('Are you sure you want to delete this card?');" class="d-inline">
-                                    <input type="hidden" name="id" value="@card.Id" />
+                                    <input type="hidden" name="id" value="@card.Number" />
                                     <button type="submit" class="btn btn-dark">Delete</button>
                                 </form>
                             </td>
@@ -82,21 +98,7 @@
         <div id="notification" style="margin-top: 20px; color: green;"></div>
     </div>
 
-    <script>
-        let connection;
-        connection = new signalR.HubConnectionBuilder().withUrl("/notificationHub")
-            .configureLogging(signalR.LogLevel.Information) // Enable detailed logging
-            .build();
-
-        connection.on("ReceiveNotification", (message) => {
-            console.log("Notification received:", message);
-            alert("Notification: " + message);
-        });
-
-        connection.start()
-        .then(() => console.log("Connected to SignalR hub"))
-        .catch(err => console.error("Error connecting to hub: ", err));
-    </script>
+   
 </body>
 
 </html>

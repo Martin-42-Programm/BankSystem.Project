@@ -10,6 +10,14 @@ public class OfficeController : Controller
     {
         this.officeService = officeService;
     }
+    
+    public IActionResult OfficeDetails(string id)
+    {
+        var model = officeService.GetById(id);
+        
+        return View(model);
+    }
+
 
     public IActionResult List()
     {
@@ -24,6 +32,13 @@ public class OfficeController : Controller
     {
         return View();
     }
+    [HttpPost]
+    public async Task<IActionResult> Delete(string id)
+    {
+        await officeService.DeleteAsync(id);
+        return RedirectToAction(nameof(List));
+    }
+
 
     [HttpPost]
     public async Task<IActionResult> Create(string address, string postCode, string city, string country)

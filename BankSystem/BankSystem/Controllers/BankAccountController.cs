@@ -16,7 +16,14 @@ public class BankAccountController : Controller
         _currencyService = currencyService;
     }
 
-    public IActionResult Details()
+    public IActionResult BankAccountDetails(string id)
+    {
+        var model = _bankAccountService.GetById(id);
+        
+        return View(model);
+    }
+
+    public IActionResult List()
     {
         var query = _bankAccountService.GetAll().AsNoTracking();
         
@@ -37,6 +44,13 @@ public class BankAccountController : Controller
         ViewBag.Currencies = currencies; // Pass to the view
         return View();
     }
+    [HttpPost]
+    public async Task<IActionResult> Delete(string id)
+    {
+        await _bankAccountService.DeleteAsync(id);
+        
+        return RedirectToAction(nameof(List));
+    }
 
     [HttpPost]
     public async Task<IActionResult> Create(string type, string currency)
@@ -52,12 +66,12 @@ public class BankAccountController : Controller
             Type = type,
             Currency = currency,
             Balance = "0.0",
-            Id = Guid.NewGuid(), // ✅ Use Guid.NewGuid() instead of new Guid()
+            Id = Guid.NewGuid().ToString(), // ✅ Use Guid.NewGuid() instead of new Guid()
            // UserId = "00000000-0000-0000-0000-00000000000"
         };
 
         await _bankAccountService.AddAsync(account); // ✅ Ensure it's awaited.
 
-        return RedirectToAction(nameof(Details));
+        return RedirectToAction(nameof(List));
     }
 }

@@ -19,7 +19,7 @@ public class CreditService : ICreditService
 
     public Task<CreditServiceModel> AddAsync(CreditServiceModel model)
     {
-        throw new NotImplementedException();
+        throw new NotImplementedException("ceco bate");
     }
 
     public Task<CreditServiceModel> UpdateAsync(CreditServiceModel model)

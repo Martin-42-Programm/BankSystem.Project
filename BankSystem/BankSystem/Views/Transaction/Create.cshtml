@@ -15,17 +15,26 @@
 <form method="post" asp-action="Create" asp-controller="Transaction">
     <p>
         <label>Recipient:</label>
-        <input type="text" name="number" placeholder="0000-0000-0000-0000" required />
+        <input type="text" name="receiverId" placeholder="0000-0000-0000-0000" required />
     </p>
 
     <p>
-        <label>Amount:</label>
+        <label> Amount:</label>
         <input type="number" name="amount" placeholder="25 BGN" required />
     </p>
     <p>
-        <label>Type:</label>
-        <input type="text" name="type" placeholder="transfer" required />
+        <label> Type:</label>
+        <input type="text" name="type" placeholder="25 BGN" required />
     </p>
+    <p>
+        <input type="hidden" name="senderId" value="@ViewBag.SenderId" />
+        <input type="hidden" name="currency" value="@ViewBag.Currency" />
+    </p>
+    
+    @* <p> *@
+    @*     <label>Type:</label> *@
+    @*     <input type="text" name="type" placeholder="transfer" required /> *@
+    @* </p> *@
     
 
     <button type="submit">Create</button>

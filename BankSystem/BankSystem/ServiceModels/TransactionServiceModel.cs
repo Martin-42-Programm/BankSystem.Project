@@ -6,6 +6,13 @@ public class TransactionServiceModel
     public string ReceiverId { get; set; }
     public decimal Amount { get; set; }
     public string Type { get; set; }
+    
+    public string SenderId { get; set; }
+    
+    public string Currency { get; set; }
+    
+    public string Status { get; set; }
+
 
     public TransactionServiceModel()
     {

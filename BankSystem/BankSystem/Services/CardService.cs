@@ -22,12 +22,12 @@ public class CardService : ICardService
 
     public CardServiceModel GetById(object id)
     {
-        return _cardRepository.GetById(Guid.Parse((string)id)).ToModel();
+        return _cardRepository.GetById((string)id).ToModel();
     }
 
     public async  Task<CardServiceModel> GetByIdAsync(string id)
     {
-        var entity = await _cardRepository.GetByIdAsync(Guid.Parse(id));
+        var entity = await _cardRepository.GetByIdAsync(id);
         return entity.ToModel();
     }
 
@@ -48,7 +48,7 @@ public class CardService : ICardService
 
     public async Task<CardServiceModel> DeleteAsync(string id)
     {
-        var card = _cardRepository.GetById(Guid.Parse(id));
+        var card = _cardRepository.GetById(id);
         if (card == null)
             throw new KeyNotFoundException();
         var model = await _cardRepository.DeleteAsync(card);

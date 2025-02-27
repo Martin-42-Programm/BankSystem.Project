@@ -4,6 +4,7 @@ using BankSystem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BankSystem.Migrations
 {
     [DbContext(typeof(ProjectDbContext))]
-    partial class ProjectDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250226192055_fixingAccountDetails")]
+    partial class fixingAccountDetails
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -110,14 +113,6 @@ namespace BankSystem.Migrations
 
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<string>("PickupOffice")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Pseudonym")
-                        .IsRequired()
-                        .HasColumnType("longtext");
 
                     b.Property<string>("SecretCode")
                         .IsRequired()
@@ -325,6 +320,9 @@ namespace BankSystem.Migrations
                     b.Property<Guid>("SenderAccountId")
                         .HasColumnType("char(36)");
 
+                    b.Property<Guid>("SenderBankAccountId")
+                        .HasColumnType("char(36)");
+
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -340,6 +338,8 @@ namespace BankSystem.Migrations
                     b.HasIndex("DeletedById");
 
                     b.HasIndex("ModifiedById");
+
+                    b.HasIndex("SenderBankAccountId");
 
                     b.ToTable("Transactions");
 
@@ -822,11 +822,19 @@ namespace BankSystem.Migrations
                         .HasForeignKey("ModifiedById")
                         .OnDelete(DeleteBehavior.Cascade);
 
+                    b.HasOne("BankSystem.Data.Entities.BankAccount", "SenderBankAccount")
+                        .WithMany()
+                        .HasForeignKey("SenderBankAccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("CreatedBy");
 
                     b.Navigation("DeletedBy");
 
                     b.Navigation("ModifiedBy");
+
+                    b.Navigation("SenderBankAccount");
                 });
 
             modelBuilder.Entity("BankSystem.Models.CreditManagement", b =>

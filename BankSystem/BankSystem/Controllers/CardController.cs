@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-
+using Microsoft.AspNetCore.SignalR;
 
 
 namespace BankSystem.Controllers;
@@ -13,16 +13,22 @@ public class CardController : Controller
 {
     private readonly ICardService _cardService;
     private readonly INotificationService _notificationService;
+    private readonly IOfficeService _officeService;
+    private readonly IHubContext<NotificationHub> _hubContext;
+   
 
-    public CardController(ICardService cardService, INotificationService notificationService)
+    public CardController(ICardService cardService, INotificationService notificationService, IHubContext<NotificationHub> hubContext, IOfficeService officeService)
     {
         this._cardService = cardService;
         this._notificationService = notificationService;
+        this._hubContext = hubContext;
+        this._officeService = officeService;
+
     }
 
     public  IActionResult CardDetails(string id)
     {
-        var model =  _cardService.GetById(id.ToString());
+        var model =  _cardService.GetById(id);
         return View(model);
     }
     public IActionResult List()
@@ -40,7 +46,7 @@ public class CardController : Controller
         //var card = await _cardService.GetByIdAsync(id);
         var cards = _cardService.GetAllAsNoTracking();
         var list = cards.ToList();
-        var card = list.FirstOrDefault(c => c.Id == id);
+        var card = list.FirstOrDefault(c => c.Number == id);
         
         
         card.IsActive = !card.IsActive;
@@ -64,6 +70,15 @@ public class CardController : Controller
     //Method for adding new entity from type card
     public IActionResult Create()
     {
+        var offices = _officeService.GetAll().AsEnumerable()
+            .Select(c => new SelectListItem
+            {
+                Value = c.Id,    // Currency code (e.g., "USD")
+                Text = $"{c.Address}, {c.City}"      // Currency name (e.g., "US Dollar")
+            }).ToList();
+      
+        ViewBag.Offices = offices; // Pass to the view
+      
         var types = new List<string>{ "debit", "credit" };
         var  viewBagTypes = types.Select(c => new SelectListItem
             {
@@ -82,7 +97,7 @@ public class CardController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(string type)
+    public async Task<IActionResult> Create(string type, string pickupOffice, string pseudonym)
     {
         if (string.IsNullOrWhiteSpace(type) )
         {
@@ -95,14 +110,17 @@ public class CardController : Controller
         {
             Type = type,
             IsActive = true,
-            Id = Guid.NewGuid().ToString(),
-            Number = random.NextDouble()*9_000_000_000_000L + 1_000_000_000_000L.ToString(),
-            ExpirationDate = DateTime.Now.AddYears(5)
-            
+           // Id = Guid.NewGuid().ToString(),
+            Number =  (random.Next(10000000, 99999999))+ random.Next(10000000, 99999999).ToString(),
+            ExpirationDate = DateTime.Now.AddYears(5),
+            PickupOffice  = pickupOffice,
+            Pseudonym = pseudonym
         };
+        
 
         var isSuccess =  await _cardService.AddAsync(card) == null ? false : true;
-        await _notificationService.NotifyAsync("00000000-0000-0000-0000-000000000006", true, $"Adding new {type} card");
+        await _notificationService.NotifyAsync("00000000-0000-0000-0000-000000000006", isSuccess, $"Adding new {type} card");
+        await _hubContext.Clients.All.SendAsync("ReceiveNotification", "card");
 
         return RedirectToAction(nameof(List));
     }

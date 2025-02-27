@@ -26,6 +26,13 @@ public class AccountController : Controller
     {
         if (ModelState.IsValid)
         {
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+                ModelState.AddModelError(string.Empty, "User not found.");
+                //return View(model);
+            }
+
             var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
             if (result.Succeeded)
             {

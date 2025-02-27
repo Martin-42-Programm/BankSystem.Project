@@ -4,6 +4,7 @@ using BankSystem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BankSystem.Migrations
 {
     [DbContext(typeof(ProjectDbContext))]
-    partial class ProjectDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250224213432_NotificationsFixed")]
+    partial class NotificationsFixed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -77,8 +80,9 @@ namespace BankSystem.Migrations
 
             modelBuilder.Entity("BankSystem.Data.Entities.Card", b =>
                 {
-                    b.Property<string>("Number")
-                        .HasColumnType("varchar(255)");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("CardholderId")
                         .IsRequired()
@@ -99,9 +103,6 @@ namespace BankSystem.Migrations
                     b.Property<DateTime>("ExpirationDate")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("Id")
-                        .HasColumnType("longtext");
-
                     b.Property<bool>("IsActive")
                         .HasColumnType("tinyint(1)");
 
@@ -111,11 +112,7 @@ namespace BankSystem.Migrations
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("PickupOffice")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Pseudonym")
+                    b.Property<string>("Number")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -127,7 +124,7 @@ namespace BankSystem.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.HasKey("Number");
+                    b.HasKey("Id");
 
                     b.HasIndex("CardholderId");
 
@@ -318,11 +315,16 @@ namespace BankSystem.Migrations
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("ReceiverAccountId")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<Guid>("ReceiverAccountId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("ReceiverBankAccountId")
+                        .HasColumnType("char(36)");
 
                     b.Property<Guid>("SenderAccountId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("SenderBankAccountId")
                         .HasColumnType("char(36)");
 
                     b.Property<string>("Status")
@@ -340,6 +342,10 @@ namespace BankSystem.Migrations
                     b.HasIndex("DeletedById");
 
                     b.HasIndex("ModifiedById");
+
+                    b.HasIndex("ReceiverBankAccountId");
+
+                    b.HasIndex("SenderBankAccountId");
 
                     b.ToTable("Transactions");
 
@@ -822,11 +828,27 @@ namespace BankSystem.Migrations
                         .HasForeignKey("ModifiedById")
                         .OnDelete(DeleteBehavior.Cascade);
 
+                    b.HasOne("BankSystem.Data.Entities.BankAccount", "ReceiverBankAccount")
+                        .WithMany()
+                        .HasForeignKey("ReceiverBankAccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BankSystem.Data.Entities.BankAccount", "SenderBankAccount")
+                        .WithMany()
+                        .HasForeignKey("SenderBankAccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("CreatedBy");
 
                     b.Navigation("DeletedBy");
 
                     b.Navigation("ModifiedBy");
+
+                    b.Navigation("ReceiverBankAccount");
+
+                    b.Navigation("SenderBankAccount");
                 });
 
             modelBuilder.Entity("BankSystem.Models.CreditManagement", b =>

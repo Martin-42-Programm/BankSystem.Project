@@ -7,7 +7,7 @@ public static class BankAccountMappings
     {
         return new BankAccount()
         {
-            Id = model.Id,                       // Map Guid Id
+            Id = Guid.Parse(model.Id),                       // Map Guid Id
             Balance = double.Parse(model.Balance),             // Map Balance
             CurrencyId = model.Currency, // Map CurrencyId (assuming Currency has a CurrencyId property)
            // Currency = model.Currency,          // Map Currency object
@@ -22,10 +22,11 @@ public static class BankAccountMappings
     {
         return new BankAccountServiceModel
         {
-            Id = entity.Id,                     // Map Guid Id
+            Id = entity.Id.ToString(),                     // Map Guid Id
             Balance = entity.Balance.ToString(),           // Map Balance
             Currency = entity.CurrencyId,        // Map Currency object
-            Type = entity.Type,                 // Map Type
+            Type = entity.Type, 
+            CreatedDate = entity.CreatedDate// Map Type
            // User = entity.User,   
          //   UserId = entity.UserId ?? "Unknown"// Map User object
         };

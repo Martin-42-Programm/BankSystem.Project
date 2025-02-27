@@ -36,28 +36,42 @@ public class BankAccountService : IBankAccountService
         await _repository.CreateAsync(model.ToEntity());
         return model;
     }
+    
+    public IQueryable<BankAccountServiceModel> GetAllAsNoTracking()
+    {
+        return _repository.GetAllAsNoTracking().Select(c => c.ToModel());
+    }
 
     public async Task<BankAccountServiceModel> UpdateAsync(BankAccountServiceModel model)
     {
-        throw new System.NotImplementedException();
+        var updatedEntity = await InternalUpdateAsync(model);
+        return updatedEntity.ToModel();
     }
 
-    public Task<BankAccountServiceModel> DeleteAsync(string id)
+    public async Task<BankAccountServiceModel> DeleteAsync(string id)
     {
-        throw new System.NotImplementedException();
+        var card = _repository.GetById(Guid.Parse(id));
+        if (card == null)
+            throw new KeyNotFoundException();
+        var model = await _repository.DeleteAsync(card);
+        return model.ToModel();
     }
     public BankAccountServiceModel GetById(object id)
     {
-        return _repository.GetById((Guid)id).ToModel();
+        return _repository.GetById(Guid.Parse((string)id)).ToModel();
     }
     
     private IQueryable<BankAccount> InternalGetAll()
     {
         return this._repository.GetAll();
-        // .Include(r => r.CreatedBy)
+        //   .Include(r => r.CreatedBy);
         // .Include(r => r.ModifiedBy)
         // .Include(r => r.DeletedBy);
     }
 
+    private async Task<BankAccount> InternalUpdateAsync(BankAccountServiceModel model)
+    {
+        return await _repository.EditAsync(model.ToEntity());
+    }
    
 }

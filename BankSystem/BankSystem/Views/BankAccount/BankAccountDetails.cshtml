@@ -1,0 +1,41 @@
+@model BankSystem.ServiceModels.BankAccountServiceModel
+
+@{
+    ViewData["Title"] = "Bank Account Details";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<table class="table table-bordered">
+    <tbody>
+    <tr>
+        <th>Account ID</th>
+        <td>@Model.Id</td>
+    </tr>
+    <tr>
+        <th>Balance</th>
+        <td>@Model.Balance</td>
+    </tr>
+    <tr>
+        <th>Currency</th>
+        <td>@Model.Currency</td>
+    </tr>
+    <tr>
+        <th>Account Type</th>
+        <td>@Model.Type</td>
+    </tr>
+    <tr>
+        <th>Created on:</th>
+        <td>@Model.CreatedDate</td>
+    </tr>
+    </tbody>
+</table>
+
+
+<form asp-action="NewTransaction" asp-controller="Transaction" method="post">
+    <input type="hidden" name="senderId" value="@Model.Id" />
+    <input type="hidden" name="currency" value="@Model.Currency" />
+
+    <button type="submit" class="btn btn-primary">Make a New Transaction</button></form>
+@* <a href="@Url.Action("Edit", "BankAccount", new { id = Model.Id })" class="btn btn-warning">Edit Account</a> *@
+<a href="@Url.Action("List", "BankAccount")" class="btn btn-secondary">Back to List</a>

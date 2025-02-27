@@ -9,4 +9,6 @@ public interface IBankAccountService : IGenericService<BankAccount, BankAccountS
     List<Account> GetAll();
     
     Account GetById(Guid id);*/
+    
+    public IQueryable<BankAccountServiceModel> GetAllAsNoTracking();
 }

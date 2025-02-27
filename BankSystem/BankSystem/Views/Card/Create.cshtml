@@ -8,13 +8,31 @@
 
 <head>
     <title>Create New Card</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.min.js"></script>
-    <script src="~/js/signalr-notifications.js"></script>
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.min.js"></script>-->
+    <!--<script src="~/js/signalr-notifications.js"></script>-->
 
 </head>
 
 <body>
 <h2>New Card</h2>
+
+<div id="notification" style="margin-top: 20px; color: green;"></div>
+
+<script>
+    // Ensure the correct configuration
+    const connection = ("http://localhost:5204/notificationHub" |> new signalR.HubConnection().withUrl).configureLogging(signalR.LogLevel.Information)
+        .withAutomaticReconnect
+        .build();
+
+    connection.start()
+        .then(() => console.log("✅ Connected to Notification Hub"))
+        .catch(err => console.error("❌ Error connecting:", err));
+
+    connection.on("ReceiveNotification", (message) => {
+        alert("🔔 Notification: " + message);
+    });
+</script>
+
 
 <form method="post" asp-action="Create" asp-controller="Card">
     <p>
@@ -22,6 +40,16 @@
         <select asp-for="Type" asp-items="ViewBag.Types" required>
             <option value="">-- Select Card --</option>
         </select>
+    </p>
+    <p>
+        <label for="PickupOffice">Puck-up office:</label>
+        <select asp-for="PickupOffice" asp-items="ViewBag.Offices" required>
+            <option value="">-- Select Card --</option>
+        </select>
+    </p>
+    <p>
+        <label>Pseudonym:</label>
+        <input type="text" name="pseudonym" placeholder="My lovely card" required />
     </p>
 
     <button type="submit">Create</button>
@@ -43,19 +71,18 @@
 <div id="notification" style="margin-top: 20px; color: green;"></div>
 
 <script>
-    // Connect to the SignalR Notification Hub
-    const connection = new signalR.HubConnectionBuilder()
-        .withUrl("https://localhost:5204/notificationHub")
-        .configureLogging()
+    // Ensure the correct configuration
+    const connection = ("https://localhost:5204/notificationHub" |> new signalR.HubConnection().withUrl).configureLogging(signalR.LogLevel.Information) 
+        .withAutomaticReconnect
         .build();
 
-    connection.on("ReceiveNotification", (message) => {
-        const notificationDiv = document.getElementById("notification");
-        notificationDiv.innerHTML = message;
-        setTimeout(() => notificationDiv.innerHTML = "", 5000);
-    });
+    connection.start()
+        .then(() => console.log("✅ Connected to Notification Hub"))
+        .catch(err => console.error("❌ Error connecting:", err));
 
-    connection.start().catch(err => console.error(err));
+    connection.on("ReceiveNotification", (message) => {
+        alert("🔔 Notification: " + message);
+    });
 </script>
 
 

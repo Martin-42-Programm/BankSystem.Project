@@ -15,7 +15,7 @@ public class OfficeService : IOfficeService
 
     public OfficeServiceModel GetById(object id)
     {
-        throw new NotImplementedException();
+            return _repository.GetById(Guid.Parse((string)id)).ToModel();
     }
 
     public Task<OfficeServiceModel> GetByIdAsync(string id)
@@ -36,9 +36,14 @@ public class OfficeService : IOfficeService
         throw new NotImplementedException();
     }
 
-    public Task<OfficeServiceModel> DeleteAsync(string id)
+    public async Task<OfficeServiceModel> DeleteAsync(string id)
     {
-        throw new NotImplementedException();
+        var card = _repository.GetById(Guid.Parse(id));
+        if (card == null)
+            throw new KeyNotFoundException();
+        var model = await _repository.DeleteAsync(card);
+        return model.ToModel();
+
     }
 
     private IQueryable<Office> InternalGetAll()

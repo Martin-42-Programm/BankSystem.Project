@@ -20,7 +20,8 @@ public static class OfficeMappings
             office.Address,
             office.Postcode,
             office.City,
-            office.Country
+            office.Country,
+            office.Id.ToString()
             );
         
     }

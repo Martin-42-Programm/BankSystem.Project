@@ -10,12 +10,12 @@ public class Transaction : MetadataBaseEntity
     [ForeignKey("Account")]
     public Guid SenderAccountId { get; set; }
     
-    public BankAccount SenderBankAccount { get; set; }
+    //public BankAccount SenderBankAccount { get; set; }
     
     [ForeignKey("Account")]
-    public Guid ReceiverAccountId { get; set; }
+    public string ReceiverAccountId { get; set; }
     
-    public BankAccount ReceiverBankAccount { get; set; }
+    //public BankAccount ReceiverBankAccount { get; set; }
 
    // public DateTime Date { get; set; }
     public decimal Amount { get; set; }
