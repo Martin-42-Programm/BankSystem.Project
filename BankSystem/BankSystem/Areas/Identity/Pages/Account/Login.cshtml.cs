@@ -133,6 +133,15 @@ namespace BankSystem.Areas.Identity.Pages.Account
                     return Page();
                 }
             }
+            else
+            {
+                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    _logger.LogError("Model error: {ErrorMessage}", error.ErrorMessage);
+                }
+                return Page();
+            }
+
 
             // If we got this far, something failed, redisplay form
             return Page();

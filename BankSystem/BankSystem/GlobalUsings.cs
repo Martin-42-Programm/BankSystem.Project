@@ -12,7 +12,7 @@ global using BankSystem.Services;
 //global using BankSystem.Repositories.Not;
 
 global using Microsoft.EntityFrameworkCore;
-global using BankSystem.Views.Account;
+global using BankSystem.Views;
 global using BankSystem.Data.Entities.Methods;
 global using BankSystem.Services.NotificationServices;
 global using Microsoft.AspNetCore.SignalR.Client;

@@ -21,8 +21,9 @@ builder.Services.AddDbContext<ProjectDbContext>(options =>
 
 
 // Add Identity services
-builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddEntityFrameworkStores<ProjectDbContext>();
+
 
 builder.Services.AddHttpContextAccessor();
 
