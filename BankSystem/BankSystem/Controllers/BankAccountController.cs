@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using BankSystem.Services;
 using BankSystem.ServiceModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.SignalR;
 
 namespace BankSystem.Controllers;
 
@@ -9,11 +10,19 @@ public class BankAccountController : Controller
 {
     private readonly IBankAccountService _bankAccountService;
     private readonly ICurrencyService _currencyService;
+    private readonly INotificationService _notificationService;
+    private readonly IHubContext<NotificationHub> _hubContext;
 
-    public BankAccountController(IBankAccountService bankAccountService, ICurrencyService currencyService)
+    public BankAccountController(
+        IBankAccountService bankAccountService, 
+        ICurrencyService currencyService,
+        INotificationService notificationService,
+        IHubContext<NotificationHub> hubContext)
     {
         _bankAccountService = bankAccountService;
         _currencyService = currencyService;
+        _notificationService = notificationService;
+        _hubContext = hubContext;
     }
 
     public IActionResult BankAccountDetails(string id)
@@ -44,10 +53,43 @@ public class BankAccountController : Controller
         ViewBag.Currencies = currencies; // Pass to the view
         return View();
     }
+    
     [HttpPost]
     public async Task<IActionResult> Delete(string id)
     {
-        await _bankAccountService.DeleteAsync(id);
+        try
+        {
+            // Get bank account details before deleting
+            var account = _bankAccountService.GetById(id);
+            
+            if (account != null)
+            {
+                string accountInfo = $"{account.Type} account ({account.Currency})";
+                
+                // Delete the account
+                await _bankAccountService.DeleteAsync(id);
+                
+                // Create notification message
+                string notificationMessage = $"{accountInfo} was successfully deleted.";
+                
+                // Store in TempData for toast display after redirect
+                TempData["NotificationMessage"] = notificationMessage;
+                
+                // Also send via SignalR
+                await _notificationService.NotifyAsync(
+                    "00000000-0000-0000-0000-000000000006", 
+                    true, 
+                    $"Deleted bank account");
+            }
+            else
+            {
+                TempData["NotificationMessage"] = "Bank account not found or could not be deleted.";
+            }
+        }
+        catch (Exception ex)
+        {
+            TempData["NotificationMessage"] = $"Error deleting bank account: {ex.Message}";
+        }
         
         return RedirectToAction(nameof(List));
     }
@@ -70,7 +112,29 @@ public class BankAccountController : Controller
            // UserId = "00000000-0000-0000-0000-00000000000"
         };
 
-        await _bankAccountService.AddAsync(account); // ✅ Ensure it's awaited.
+        try
+        {
+            var result = await _bankAccountService.AddAsync(account);
+            bool isSuccess = result != null;
+            
+            // Create notification message
+            string notificationMessage = isSuccess 
+                ? $"New {type} account in {currency} was successfully created!" 
+                : "Failed to create new bank account.";
+            
+            // Store in TempData for toast display after redirect
+            TempData["NotificationMessage"] = notificationMessage;
+            
+            // Also send via SignalR
+            await _notificationService.NotifyAsync(
+                "00000000-0000-0000-0000-000000000006", 
+                isSuccess, 
+                $"Creating new {type} account");
+        }
+        catch (Exception ex)
+        {
+            TempData["NotificationMessage"] = $"Error creating bank account: {ex.Message}";
+        }
 
         return RedirectToAction(nameof(List));
     }

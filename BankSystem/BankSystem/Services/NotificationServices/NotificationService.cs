@@ -21,7 +21,6 @@ public class NotificationService : INotificationService
 
         await _notificationRepository.CreateAsync(notification);
         //TODO: I have to change All to userId
-        await _hubContext.Clients.All.SendAsync("ReceiveNotification", notification);
-
+        await _hubContext.Clients.All.SendAsync("ReceiveNotification", fullMessage);
     }
 }

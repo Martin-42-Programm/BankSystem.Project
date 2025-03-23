@@ -43,9 +43,80 @@
         &copy; 2024 - BankSystem - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
     </div>
 </footer>
+
+<!-- Toast container -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header bg-primary text-white">
+            <strong class="me-auto">Notification</strong>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body" id="toastMessage">
+            <!-- Toast message will be injected here -->
+        </div>
+    </div>
+</div>
+
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="~/js/site.js" asp-append-version="true"></script>
+
+<!-- SignalR Script -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.min.js"></script>
+<script>
+    // Initialize SignalR connection
+    let hubConnection = new signalR.HubConnectionBuilder()
+        .withUrl("/notificationHub")
+        .configureLogging(signalR.LogLevel.Information)
+        .withAutomaticReconnect()
+        .build();
+
+    // Start connection
+    hubConnection.start()
+        .then(() => console.log("Connected to SignalR notification hub"))
+        .catch(err => console.error("Error connecting to notification hub:", err));
+
+    // Handle real-time notifications
+    hubConnection.on("ReceiveNotification", (message) => {
+        console.log("Real-time notification received:", message);
+        
+        // Get the toast elements
+        const toastEl = document.getElementById('liveToast');
+        const toastMessageEl = document.getElementById('toastMessage');
+        
+        // Update toast message and show it
+        if (toastEl && toastMessageEl) {
+            toastMessageEl.textContent = message;
+            const toast = new bootstrap.Toast(toastEl, {
+                animation: true,
+                autohide: true,
+                delay: 5000
+            });
+            toast.show();
+        }
+    });
+</script>
+
+<!-- Toast handling script -->
+<script>
+    // Check for notification in TempData
+    @if (TempData["NotificationMessage"] != null)
+    {
+        <text>
+        document.addEventListener('DOMContentLoaded', function () {
+            const toastEl = document.getElementById('liveToast');
+            document.getElementById('toastMessage').textContent = '@TempData["NotificationMessage"]';
+            const toast = new bootstrap.Toast(toastEl, {
+                animation: true,
+                autohide: true,
+                delay: 5000 // Show for 5 seconds
+            });
+            toast.show();
+        });
+        </text>
+    }
+</script>
+
 @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
