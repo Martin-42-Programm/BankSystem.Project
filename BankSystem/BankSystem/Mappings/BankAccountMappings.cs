@@ -1,3 +1,5 @@
+using System.Globalization;
+
 namespace BankSystem.Mappings;
 
 public static class BankAccountMappings
@@ -8,7 +10,7 @@ public static class BankAccountMappings
         return new BankAccount()
         {
             Id = Guid.Parse(model.Id),                       // Map Guid Id
-            Balance = double.Parse(model.Balance),             // Map Balance
+            Balance = double.Parse(model.Balance, CultureInfo.InvariantCulture),  // Use InvariantCulture to parse
             CurrencyId = model.Currency, // Map CurrencyId (assuming Currency has a CurrencyId property)
            // Currency = model.Currency,          // Map Currency object
             Type = model.Type,                   // Map Type
@@ -23,7 +25,7 @@ public static class BankAccountMappings
         return new BankAccountServiceModel
         {
             Id = entity.Id.ToString(),                     // Map Guid Id
-            Balance = entity.Balance.ToString(),           // Map Balance
+            Balance = entity.Balance.ToString(CultureInfo.InvariantCulture),  // Use InvariantCulture for consistent formatting
             Currency = entity.CurrencyId,        // Map Currency object
             Type = entity.Type, 
             CreatedDate = entity.CreatedDate// Map Type

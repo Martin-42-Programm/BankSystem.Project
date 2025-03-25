@@ -92,7 +92,34 @@ public class CardController : Controller
     [HttpPost]
     public async Task<IActionResult> Delete(string id)
     {
-        await _cardService.DeleteAsync(id);
+        // Get the card to determine its type
+        var card = await _cardService.GetByIdAsync(id);
+        
+        if (card != null)
+        {
+            bool isDebitCard = card.Type.ToLower() == "debit";
+            string cardType = card.Type;
+            
+            // Delete the card
+            await _cardService.DeleteAsync(id);
+            
+            // Set notification message
+            string notificationMessage = isDebitCard ? 
+                $"Debit card ({card.Pseudonym}) was successfully deleted." : 
+                $"{cardType} card ({card.Pseudonym}) was deleted.";
+            
+            // Store in TempData for toast display after redirect
+            TempData["NotificationMessage"] = notificationMessage;
+            
+            // Also send via SignalR for real-time notification
+            await _notificationService.NotifyAsync("00000000-0000-0000-0000-000000000006", true, 
+                isDebitCard ? $"Deleted debit card" : $"Deleted {cardType} card");
+        }
+        else
+        {
+            TempData["NotificationMessage"] = "Card not found or could not be deleted.";
+        }
+        
         return RedirectToAction(nameof(List));
     }
 
@@ -117,10 +144,16 @@ public class CardController : Controller
             Pseudonym = pseudonym
         };
         
-
-        var isSuccess =  await _cardService.AddAsync(card) == null ? false : true;
+        var isSuccess = await _cardService.AddAsync(card) != null;
+        
+        // Create notification message
+        var notificationMessage = isSuccess ? $"Adding new {type} card successful!" : $"Adding new {type} card failed!";
+        
+        // Store in TempData to display toast after redirect
+        TempData["NotificationMessage"] = notificationMessage;
+        
+        // Also send via SignalR
         await _notificationService.NotifyAsync("00000000-0000-0000-0000-000000000006", isSuccess, $"Adding new {type} card");
-        await _hubContext.Clients.All.SendAsync("ReceiveNotification", "card");
 
         return RedirectToAction(nameof(List));
     }
