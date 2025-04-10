@@ -11,8 +11,9 @@ public static class TransactionMappings
             Amount = model.Amount,
             Type = model.Type,
             Currency = model.Currency,
-            Status = "Working on",
-            SenderAccountId = Guid.Parse(model.SenderId)
+            Status = model.Status ?? "Working on",
+            SenderAccountId = Guid.Parse(model.SenderId),
+            FlagReason = model.FlagReason
         };
     }
     
@@ -27,6 +28,8 @@ public static class TransactionMappings
             TransactionId = entity.Id.ToString(),
             Currency = entity.Currency,
             SenderId = entity.SenderAccountId.ToString(),
+            Status = entity.Status,
+            FlagReason = entity.FlagReason
         };
     }
 }

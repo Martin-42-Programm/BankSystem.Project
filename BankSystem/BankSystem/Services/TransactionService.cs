@@ -18,9 +18,15 @@ public class TransactionService : ITransactionService
         throw new NotImplementedException();
     }
 
-    public Task<TransactionServiceModel> GetByIdAsync(string id)
+    public async Task<TransactionServiceModel> GetByIdAsync(string id)
     {
-        throw new NotImplementedException();
+        if (string.IsNullOrEmpty(id) || !Guid.TryParse(id, out var transactionId))
+        {
+            return null;
+        }
+        
+        var transaction = await _transactionRepository.GetByIdAsync(transactionId);
+        return transaction?.ToModel();
     }
 
     public async Task<TransactionServiceModel> AddAsync(TransactionServiceModel model)
