@@ -36,6 +36,7 @@ builder.Services.AddScoped<CreditRepository>();
 builder.Services.AddScoped<OfficeRepository>();
 builder.Services.AddScoped<CurrencyRepository>();
 builder.Services.AddScoped<NotificationRepository>();
+builder.Services.AddScoped<AuditLogRepository>();
 
 
 //Add services
@@ -46,6 +47,7 @@ builder.Services.AddScoped<ICreditService, CreditService>();
 builder.Services.AddScoped<IOfficeService, OfficeService>();
 builder.Services.AddScoped<ICurrencyService, CurrencyService>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
+builder.Services.AddScoped<IAuditLogService, AuditLogService>();
 
 builder.Services.AddSignalR();
 

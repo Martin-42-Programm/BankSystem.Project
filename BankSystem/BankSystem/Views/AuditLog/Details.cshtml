@@ -1,0 +1,65 @@
+@model BankSystem.ServiceModels.AuditLogServiceModel
+
+@{
+    ViewData["Title"] = "Audit Log Details";
+}
+
+<h1>Audit Log Details</h1>
+
+<div class="card">
+    <div class="card-header">
+        <i class="fas fa-info-circle"></i> Audit Log Information
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <dl class="row">
+                    <dt class="col-sm-4">Log ID:</dt>
+                    <dd class="col-sm-8">@Model.Id</dd>
+                    
+                    <dt class="col-sm-4">Timestamp:</dt>
+                    <dd class="col-sm-8">@Model.Timestamp.ToString("yyyy-MM-dd HH:mm:ss")</dd>
+                    
+                    <dt class="col-sm-4">User:</dt>
+                    <dd class="col-sm-8">@Model.UserName (@Model.Email)</dd>
+                    
+                    <dt class="col-sm-4">User ID:</dt>
+                    <dd class="col-sm-8">@Model.UserId</dd>
+                </dl>
+            </div>
+            <div class="col-md-6">
+                <dl class="row">
+                    <dt class="col-sm-4">Action:</dt>
+                    <dd class="col-sm-8">@Model.Action</dd>
+                    
+                    <dt class="col-sm-4">Entity Type:</dt>
+                    <dd class="col-sm-8">@Model.EntityType</dd>
+                    
+                    <dt class="col-sm-4">Entity ID:</dt>
+                    <dd class="col-sm-8">@Model.EntityId</dd>
+                    
+                    <dt class="col-sm-4">IP Address:</dt>
+                    <dd class="col-sm-8">@Model.IpAddress</dd>
+                    
+                    <dt class="col-sm-4">User Agent:</dt>
+                    <dd class="col-sm-8">@Model.UserAgent</dd>
+                </dl>
+            </div>
+        </div>
+        
+        <div class="row mt-4">
+            <div class="col-12">
+                <h5>Details:</h5>
+                <div class="card">
+                    <div class="card-body">
+                        <pre>@Model.Details</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mt-3">
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</div> 
