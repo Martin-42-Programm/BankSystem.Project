@@ -4,8 +4,6 @@ namespace BankSystem.Data.Entities;
 
 public class User : IdentityUser
 {
-    [Key]
-    public string? Id { get; set; } 
     public string? EGN { get; set; }
     public string? FirstName { get; set; }
     public string? FathersName { get; set; }
@@ -16,7 +14,6 @@ public class User : IdentityUser
     
     public User()
     {
-       // Id = Guid.NewGuid().ToString();
-        
+        Id = Guid.NewGuid().ToString();
     }
 }
