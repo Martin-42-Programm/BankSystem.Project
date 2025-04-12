@@ -1,0 +1,101 @@
+@model BankSystem.ServiceModels.TransactionServiceModel
+
+@{
+    ViewData["Title"] = "Transaction Details";
+    Layout = "_Layout";
+}
+
+<div class="container my-4">
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h2 class="mb-0">Transaction Details</h2>
+        </div>
+        <div class="card-body">
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success">
+                    @TempData["SuccessMessage"]
+                </div>
+            }
+
+            @if (TempData["WarningMessage"] != null)
+            {
+                <div class="alert alert-warning">
+                    @TempData["WarningMessage"]
+                </div>
+            }
+
+            <div class="row mb-3">
+                <div class="col-md-4 font-weight-bold">Transaction ID:</div>
+                <div class="col-md-8">@Model.TransactionId</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-4 font-weight-bold">Sender ID:</div>
+                <div class="col-md-8">@Model.SenderId</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-4 font-weight-bold">Receiver ID:</div>
+                <div class="col-md-8">@Model.ReceiverId</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-4 font-weight-bold">Amount:</div>
+                <div class="col-md-8">@Model.Amount @Model.Currency</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-4 font-weight-bold">Type:</div>
+                <div class="col-md-8">@Model.Type</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-4 font-weight-bold">Status:</div>
+                <div class="col-md-8">
+                    @if (Model.Status == "Approved")
+                    {
+                        <span class="badge bg-success">@Model.Status</span>
+                    }
+                    else if (Model.Status == "Declined")
+                    {
+                        <span class="badge bg-danger">@Model.Status</span>
+                    }
+                    else if (Model.Status == "Flagged")
+                    {
+                        <span class="badge bg-warning">@Model.Status</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-info">@Model.Status</span>
+                    }
+                </div>
+            </div>
+
+            @if (!string.IsNullOrEmpty(Model.FlagReason))
+            {
+                <div class="row mb-3">
+                    <div class="col-md-4 font-weight-bold">Flag Reason:</div>
+                    <div class="col-md-8 text-danger">@Model.FlagReason</div>
+                </div>
+            }
+        </div>
+
+        <div class="card-footer">
+            <a asp-action="List" class="btn btn-secondary">Back to List</a>
+            
+            @if (Model.Status == "Flagged")
+            {
+                <div class="mt-3">
+                    <h5>This transaction requires approval:</h5>
+                    <div class="d-flex gap-2">
+                        <form asp-action="Approve" method="post">
+                            <input type="hidden" name="id" value="@Model.TransactionId" />
+                            <button type="submit" class="btn btn-success">Approve Transaction</button>
+                        </form>
+                        
+                        <form asp-action="Decline" method="post">
+                            <input type="hidden" name="id" value="@Model.TransactionId" />
+                            <button type="submit" class="btn btn-danger">Decline Transaction</button>
+                        </form>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div> 
