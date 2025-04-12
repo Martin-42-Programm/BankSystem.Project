@@ -1,17 +1,23 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using BankSystem.Models;
+using BankSystem.Services;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Text.Json;
+
+namespace BankSystem.Controllers;
 
 [Authorize(Roles = "Admin")]
 public class CreditManagementController : Controller
 {
     private readonly ProjectDbContext _context;
+    private readonly IAuditLogService _auditLogService;
 
-    public CreditManagementController(ProjectDbContext context)
+    public CreditManagementController(ProjectDbContext context, IAuditLogService auditLogService)
     {
         _context = context;
+        _auditLogService = auditLogService;
     }
 
     [HttpGet]
@@ -37,6 +43,21 @@ public class CreditManagementController : Controller
             };
             _context.CreditManagements.Add(credit);
             await _context.SaveChangesAsync();
+            
+            // Log the admin action
+            var details = JsonSerializer.Serialize(new 
+            { 
+                RequestId = id,
+                RequestAmount = request.Amount,
+                RequestUserId = request.UserId,
+                CreditId = credit.Id
+            });
+            
+            await _auditLogService.LogActionAsync(
+                "Credit Request Approved", 
+                "CreditRequest", 
+                id.ToString(), 
+                details);
         }
         return RedirectToAction("Index");
     }
@@ -49,6 +70,20 @@ public class CreditManagementController : Controller
         {
             request.Status = "Rejected";
             await _context.SaveChangesAsync();
+            
+            // Log the admin action
+            var details = JsonSerializer.Serialize(new 
+            { 
+                RequestId = id,
+                RequestAmount = request.Amount,
+                RequestUserId = request.UserId
+            });
+            
+            await _auditLogService.LogActionAsync(
+                "Credit Request Rejected", 
+                "CreditRequest", 
+                id.ToString(), 
+                details);
         }
         return RedirectToAction("Index");
     }
