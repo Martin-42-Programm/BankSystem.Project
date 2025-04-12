@@ -98,6 +98,33 @@ namespace BankSystem.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            [Required]
+            [Display(Name = "First Name")]
+            public string FirstName { get; set; }
+
+            [Display(Name = "Father's Name")]
+            public string FathersName { get; set; }
+
+            [Required]
+            [Display(Name = "Last Name")]
+            public string LastName { get; set; }
+
+            [Required]
+            [Display(Name = "EGN")]
+            public string EGN { get; set; }
+
+            [Required]
+            [Display(Name = "ID Number")]
+            public string IDNumber { get; set; }
+
+            [Required]
+            [Display(Name = "Address")]
+            public string Address { get; set; }
+
+            [Required]
+            [Display(Name = "Phone")]
+            public string Phone { get; set; }
         }
 
 
@@ -117,6 +144,16 @@ namespace BankSystem.Areas.Identity.Pages.Account
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                
+                // Set additional user properties
+                user.FirstName = Input.FirstName;
+                user.FathersName = Input.FathersName;
+                user.LastName = Input.LastName;
+                user.EGN = Input.EGN;
+                user.IDNumber = Input.IDNumber;
+                user.Address = Input.Address;
+                user.Phone = Input.Phone;
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
@@ -142,7 +179,8 @@ namespace BankSystem.Areas.Identity.Pages.Account
                     else
                     {
                         await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl);
+                        TempData["RegistrationSuccess"] = "Your registration was successful! You will be redirected to the home page in a few seconds.";
+                        return RedirectToPage("Register");
                     }
                 }
                 foreach (var error in result.Errors)
