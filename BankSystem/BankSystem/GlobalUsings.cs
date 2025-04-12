@@ -16,4 +16,7 @@ global using BankSystem.Views;
 global using BankSystem.Data.Entities.Methods;
 global using BankSystem.Services.NotificationServices;
 global using Microsoft.AspNetCore.SignalR.Client;
+global using DinkToPdf;
+global using DinkToPdf.Contracts;
+global using Microsoft.AspNetCore.Identity;
 //global using Microsoft.AspNetCore.SignalR;

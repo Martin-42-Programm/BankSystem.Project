@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using BankSystem.Data;
 using BankSystem.Models;
+using Rotativa.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,7 @@ string connectionString = builder
                               .GetConnectionString("ApplicationContextConnectionString") ??
                           throw new InvalidDataException("No valid connection string!");
 
+builder.Services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
@@ -47,6 +49,7 @@ builder.Services.AddScoped<IOfficeService, OfficeService>();
 builder.Services.AddScoped<ICurrencyService, CurrencyService>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
 
+
 builder.Services.AddSignalR();
 
 builder.Services.AddCors(options =>
@@ -62,6 +65,9 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+
+//RotativaConfiguration.Setup(app.Environment.WebRootPath, "/wwwroot");
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

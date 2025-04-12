@@ -6,13 +6,34 @@
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 
-    <a id="manage" class="nav-link text-dark" asp-area="" asp-controller="BankAccount" asp-action="List" title="Manage">My bank accounts</a>
-    <a id="manage" class="nav-link text-dark" asp-area="" asp-controller="BankAccount" asp-action="Create" title="Manage">Create new bank account</a>
-    <a id="manage" class="nav-link text-dark" asp-area="" asp-controller="Currency" asp-action="Create" title="Manage">New currency</a>
-    <a id="manage" class="nav-link text-dark" asp-area="" asp-controller="Office" asp-action="Create" title="Manage">Create a new bank office</a>
-    <a id="manage" class="nav-link text-dark" asp-area="" asp-controller="Office" asp-action="List" title="Manage">Bank offices</a>
-    <a id="manage" class="nav-link text-dark" asp-area="" asp-controller="Card" asp-action="Create" title="Manage">Create a new card</a>
-    <a id="manage" class="nav-link text-dark" asp-area="" asp-controller="Card" asp-action="List" title="Manage">My cards</a>
-    <a id="manage" class="nav-link text-dark" asp-area="" asp-controller="Transaction" asp-action="List" title="Manage">Transactions history</a>
+    <nav>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a id="manage-bank-accounts" class="nav-link text-dark" asp-area="" asp-controller="BankAccount" asp-action="List" title="Manage">My bank accounts</a>
+            </li>
+            <li class="nav-item">
+                <a id="create-bank-account" class="nav-link text-dark" asp-area="" asp-controller="BankAccount" asp-action="Create" title="Manage">Create new bank account</a>
+            </li>
+            <li class="nav-item">
+                <a id="create-currency" class="nav-link text-dark" asp-area="" asp-controller="Currency" asp-action="Create" title="Manage">New currency</a>
+            </li>
+            <li class="nav-item">
+                <a id="create-bank-office" class="nav-link text-dark" asp-area="" asp-controller="Office" asp-action="Create" title="Manage">Create a new bank office</a>
+            </li>
+            <li class="nav-item">
+                <a id="list-bank-offices" class="nav-link text-dark" asp-area="" asp-controller="Office" asp-action="List" title="Manage">Bank offices</a>
+            </li>
+            <li class="nav-item">
+                <a id="create-card" class="nav-link text-dark" asp-area="" asp-controller="Card" asp-action="Create" title="Manage">Create a new card</a>
+            </li>
+            <li class="nav-item">
+                <a id="list-cards" class="nav-link text-dark" asp-area="" asp-controller="Card" asp-action="List" title="Manage">My cards</a>
+            </li>
+            <li class="nav-item">
+                <a id="transaction-history" class="nav-link text-dark" asp-area="" asp-controller="Transaction" asp-action="List" title="Manage">Transactions history</a>
+            </li>
+        </ul>
+    </nav>
+
 </div>
 

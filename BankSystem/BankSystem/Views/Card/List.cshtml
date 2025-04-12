@@ -85,6 +85,12 @@
                                     <button type="submit" class="btn btn-dark">Delete</button>
                                 </form>
                             </td>
+                            <td>
+                                <form method="post" asp-controller="Card" asp-action="MarkAsLost" onsubmit="return confirm('Are you sure you want to mark this card as lost?');" class="d-inline">
+                                    <input type="hidden" name="id" value="@card.Number" />
+                                    <button type="submit" class="btn btn-dark">Mark as lost</button>
+                                </form>
+                            </td>
                         </tr>
                     }
                 </tbody>

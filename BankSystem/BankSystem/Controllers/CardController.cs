@@ -67,6 +67,34 @@ public class CardController : Controller
 
         return RedirectToAction(nameof(List));
     }
+    
+    public async Task<IActionResult> MarkAsLost(string id)
+    {
+        //var card = await _cardService.GetByIdAsync(id);
+        var cards = _cardService.GetAllAsNoTracking();
+        var list = cards.ToList();
+        var card = list.FirstOrDefault(c => c.Number == id);
+        
+        
+        card.IsActive = false;
+
+        card.Pseudonym = "lostCard";
+
+        /* if (card == null)
+         {
+             return NotFound();
+         }
+
+
+         card.IsActive = !card.IsActive;*/
+
+        
+        //TODO: implement edit service methods
+        await _cardService.UpdateAsync(card);
+        TempData["LostCardType"] = card.Type;
+        TempData["Pseudonym"] = card.Pseudonym;
+        return RedirectToAction(nameof(Create));
+    }
     //Method for adding new entity from type card
     public IActionResult Create()
     {
@@ -78,15 +106,19 @@ public class CardController : Controller
             }).ToList();
       
         ViewBag.Offices = offices; // Pass to the view
-      
+        
         var types = new List<string>{ "debit", "credit" };
+        var selectedType = TempData["LostCardType"] as string;
+        var selectedPseudonym = TempData["Pseudonym"] as string;
         var  viewBagTypes = types.Select(c => new SelectListItem
             {
                 Value = c,    // Currency code (e.g., "USD")
-                Text = c      // Currency name (e.g., "US Dollar")
+                Text = c,
+                Selected = selectedType != null && c == selectedType// Currency name (e.g., "US Dollar")
             }).ToList();
         //TODO: Multiple choice for type of bankaccount
         ViewBag.Types = viewBagTypes; // Pass to the view
+        ViewBag.Pseudonym = selectedPseudonym;
         return View();
     }
     [HttpPost]
