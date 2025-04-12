@@ -12,6 +12,8 @@ public class TransactionServiceModel
     public string Currency { get; set; }
     
     public string Status { get; set; }
+    
+    public string FlagReason { get; set; }
 
 
     public TransactionServiceModel()

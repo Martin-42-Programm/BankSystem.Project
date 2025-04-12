@@ -27,6 +27,7 @@ public class Transaction : MetadataBaseEntity
     
     public string Status { get; set; }
     
+    public string FlagReason { get; set; }
    
     
     
