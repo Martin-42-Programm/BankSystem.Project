@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Rotativa.AspNetCore;
 
 namespace BankSystem.Controllers;
 
@@ -6,11 +7,15 @@ public class TransactionController : Controller
 {
     private readonly ITransactionService _transactionService;
     private readonly IBankAccountService _bankAccountService;
+   // private readonly IUserService _userService;
+    private readonly IConverter _converter;
 
-    public TransactionController(ITransactionService transactionService, IBankAccountService bankAccountService)
+    public TransactionController(ITransactionService transactionService, IBankAccountService bankAccountService, IConverter converter)
     {
         this._transactionService = transactionService;
         this._bankAccountService = bankAccountService;
+        this._converter = converter;
+        
     }
     
     public IActionResult NewTransaction(string senderId, string currency)
@@ -35,7 +40,20 @@ public class TransactionController : Controller
         
         return View(model);
     }
-   
+
+
+    public IActionResult DownloadInvoicePdf()
+    {
+        var query = _transactionService.GetAll().AsNoTracking();
+        
+        var model = query.ToList();
+
+        return new ViewAsPdf("List", model)
+        {
+            FileName = "InvoicePdf.pdf"
+        };
+    }
+       
     public async Task<IActionResult> Details(string id)
     {
         if (string.IsNullOrEmpty(id))
@@ -120,6 +138,7 @@ public class TransactionController : Controller
         return RedirectToAction(nameof(Details), new { id });
     }
 
+
     [HttpPost]
     public async Task<IActionResult> Create(string receiverId, decimal amount, string senderId, string currency, string type)
     {
@@ -157,6 +176,7 @@ public class TransactionController : Controller
         }
         
         var accounts = _bankAccountService.GetAllAsNoTracking();
+        // var users = _
         var list = accounts.ToList();
         var senderAccount = list.FirstOrDefault(c => c.Id == senderId);
         var receiverAccount = list.FirstOrDefault(c => c.Id == receiverId);
@@ -183,4 +203,5 @@ public class TransactionController : Controller
             return RedirectToAction(nameof(List));
         }
     }
+
 }
