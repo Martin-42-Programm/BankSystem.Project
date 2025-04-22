@@ -1,46 +1,46 @@
 @model BankAccount
+@inject UserManager<User> UserManager
 @{
     Layout = "_Layout";
 }
 
-<!DOCTYPE html>
-<html lang="en">
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg rounded-3">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Create Bank Account</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post" asp-action="Create" asp-controller="BankAccount" asp-route-id=@UserManager.GetUserId(User)>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Type:</label>
+                            <input type="text" name="type" class="form-control" placeholder="e.g., savings" required />
+                        </div>
 
-<head>
-    <title>Create Bank Account</title>
-</head>
+                        <div class="mb-3">
+                            <label for="Currency" class="form-label fw-bold">Currency:</label>
+                            <select asp-for="Currency" asp-items="ViewBag.Currencies" class="form-select" required>
+                                <option value="">-- Select Currency --</option>
+                            </select>
+                        </div>
 
-<body>
-<h2>Create Bank Account</h2>
+                        <button type="submit" class="btn btn-success w-100">Create Account</button>
+                    </form>
 
-<form method="post" asp-action="Create" asp-controller="BankAccount">
-    <p>
-        <label>Type:</label>
-        <input type="text" name="type" placeholder="e.g., savings" required />
-    </p>
-
-    <p>
-        <label for="Currency">Currency:</label>
-        <select asp-for="Currency" asp-items="ViewBag.Currencies" required>
-            <option value="">-- Select Currency --</option>
-        </select>
-    </p>
-
-    <button type="submit">Create</button>
-</form>
-
-<div>
-    @if (!ViewData.ModelState.IsValid)
-    {
-        <ul>
-            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
-            {
-                <li>@error.ErrorMessage</li>
-            }
-        </ul>
-    }
+                    @if (!ViewData.ModelState.IsValid)
+                    {
+                        <div class="alert alert-danger mt-3">
+                            <ul class="mb-0">
+                                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                                {
+                                    <li>@error.ErrorMessage</li>
+                                }
+                            </ul>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-
-</body>
-
-</html>

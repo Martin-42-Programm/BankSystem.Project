@@ -1,51 +1,54 @@
 @model Card
+@inject UserManager<User> UserManager
 @{
+    ViewData["Title"] = "Create New Card";
     Layout = "_Layout";
 }
 
-<!DOCTYPE html>
-<html lang="en">
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-primary text-white rounded-top-4">
+                    <h4 class="mb-0">Create a New Card</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post" asp-action="Create" asp-controller="Card" asp-route-id=@UserManager.GetUserId(User)>
+                        <div class="mb-3">
+                            <label asp-for="Type" class="form-label">Card Type</label>
+                            <select asp-for="Type" asp-items="ViewBag.Types" class="form-select" required>
+                                <option value="">-- Select Card Type --</option>
+                            </select>
+                        </div>
 
-<head>
-    <title>Create New Card</title>
-</head>
+                        <div class="mb-3">
+                            <label asp-for="PickupOffice" class="form-label">Pickup Office</label>
+                            <select asp-for="PickupOffice" asp-items="ViewBag.Offices" class="form-select" required>
+                                <option value="">-- Select Office --</option>
+                            </select>
+                        </div>
 
-<body>
-<h2>New Card</h2>
+                        <div class="mb-3">
+                            <label class="form-label">Pseudonym</label>
+                            <input type="text" name="pseudonym" class="form-control" placeholder="e.g., My lovely card" required />
+                        </div>
 
-<form method="post" asp-action="Create" asp-controller="Card">
-    <p>
-        <label for="Type">Type:</label>
-        <select asp-for="Type" asp-items="ViewBag.Types" required>
-            <option value="">-- Select Card --</option>
-        </select>
-    </p>
-    <p>
-        <label for="PickupOffice">Puck-up office:</label>
-        <select asp-for="PickupOffice" asp-items="ViewBag.Offices" required>
-            <option value="">-- Select Card --</option>
-        </select>
-    </p>
-    <p>
-        <label>Pseudonym:</label>
-        <input type="text" name="pseudonym" placeholder="My lovely card" required />
-    </p>
+                        <button type="submit" class="btn btn-success w-100">Create Card</button>
+                    </form>
 
-    <button type="submit">Create</button>
-</form>
-
-<div>
-    @if (!ViewData.ModelState.IsValid)
-    {
-        <ul>
-            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
-            {
-                <li>@error.ErrorMessage</li>
-            }
-        </ul>
-    }
+                    @if (!ViewData.ModelState.IsValid)
+                    {
+                        <div class="alert alert-danger mt-4">
+                            <ul class="mb-0">
+                                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                                {
+                                    <li>@error.ErrorMessage</li>
+                                }
+                            </ul>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-
-</body>
-
-</html>

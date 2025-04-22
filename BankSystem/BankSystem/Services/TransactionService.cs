@@ -25,7 +25,7 @@ public class TransactionService : ITransactionService
             return null;
         }
         
-        var transaction = await _transactionRepository.GetByIdAsync(transactionId);
+        var transaction = await _transactionRepository.GetAllAsNoTracking().FirstOrDefaultAsync(t => t.Id == transactionId);
         return transaction?.ToModel();
     }
 

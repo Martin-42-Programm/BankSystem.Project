@@ -1,6 +1,8 @@
+using System.Runtime.InteropServices;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using BankSystem.Data;
+using BankSystem.Data.DataSeed;
 using BankSystem.Models;
 using Rotativa.AspNetCore;
 
@@ -15,17 +17,30 @@ string connectionString = builder
 
 builder.Services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
 builder.Services.AddControllersWithViews();
+
+
+
 builder.Services.AddRazorPages();
 
 builder.Services.AddDbContext<ProjectDbContext>(options =>
     options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 2))));
 
-
-
-// Add Identity services
-builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false)
+builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<ProjectDbContext>()
     .AddDefaultTokenProviders();
+
+// Add Identity services
+// builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false)
+//     .AddEntityFrameworkStores<ProjectDbContext>()
+//     .AddDefaultTokenProviders();
+
+// builder.Services.AddIdentity<User, IdentityRole>(
+//     
+//         options => options.SignIn.RequireConfirmedAccount = false
+//     )
+//     .AddEntityFrameworkStores<ProjectDbContext>()
+//     .AddDefaultTokenProviders();
+
 
 
 builder.Services.AddHttpContextAccessor();
@@ -50,6 +65,9 @@ builder.Services.AddScoped<IOfficeService, OfficeService>();
 builder.Services.AddScoped<ICurrencyService, CurrencyService>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
 builder.Services.AddScoped<IAuditLogService, AuditLogService>();
+builder.Services.AddScoped<IUserService, UserService>();
+
+
 
 
 builder.Services.AddSignalR();
@@ -68,8 +86,12 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-//RotativaConfiguration.Setup(app.Environment.WebRootPath, "/wwwroot");
 
+
+// Optionally, configure additional Rotativa options here if needed
+// For example, set a different path or other options.
+//app.UseRotativa(); // Enables middleware to handle PDF generation routes.
+//RotativaConfiguration.Setup(app.Environment.WebRootPath, "/wwwroot/Rotativa/wkhtmltopdf.exe");
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -91,7 +113,7 @@ using (var serviceScope = app.Services.CreateScope())
     app.MapHub<NotificationHub>("/notificationHub");
     app.UseAuthentication(); // Add this line
     app.UseAuthorization();
-
+    DataSeed.SeedUserRoles(app);
     app.MapStaticAssets();
 
     app.MapControllerRoute(
@@ -101,4 +123,5 @@ using (var serviceScope = app.Services.CreateScope())
 
     app.Run();
 }
+
 

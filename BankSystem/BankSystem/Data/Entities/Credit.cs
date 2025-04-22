@@ -16,5 +16,7 @@ public class Credit : MetadataBaseEntity
     
     public string Purpose { get; set; }
     
+    public string Status { get; set; }
+    
     public DateTime DesiredRepaymentTerm { get; set; }
 }

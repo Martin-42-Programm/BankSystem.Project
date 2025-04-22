@@ -35,8 +35,8 @@ public class AuditLogRepository : BaseGenericRepository<AuditLog>
             UserAgent = httpContext?.Request?.Headers["User-Agent"].ToString()
         };
         
-        await CreateAsync(auditLog);
-        return auditLog;
+        return await CreateAsync(auditLog);
+      //  return auditLog;
     }
     
     public IQueryable<AuditLog> SearchLogs(

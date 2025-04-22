@@ -2,18 +2,19 @@ using Microsoft.AspNetCore.Mvc;
 using Rotativa.AspNetCore;
 
 namespace BankSystem.Controllers;
-
+[Authorize(Roles = "Admin, User")]
 public class TransactionController : Controller
 {
     private readonly ITransactionService _transactionService;
     private readonly IBankAccountService _bankAccountService;
-   // private readonly IUserService _userService;
+    private readonly IUserService _userService;
     private readonly IConverter _converter;
 
-    public TransactionController(ITransactionService transactionService, IBankAccountService bankAccountService, IConverter converter)
+    public TransactionController(ITransactionService transactionService, IBankAccountService bankAccountService, IUserService userService, IConverter converter)
     {
         this._transactionService = transactionService;
         this._bankAccountService = bankAccountService;
+        this._userService = userService;
         this._converter = converter;
         
     }
@@ -28,17 +29,29 @@ public class TransactionController : Controller
     public IActionResult List(string status)
     {
         var query = _transactionService.GetAll().AsNoTracking();
+       // var userId = User?.Identity?.IsAuthenticated == true ? User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value : null;
+        //var user = _userService.GetUserByIdAsync(userId);
+        var list = new List<Transaction>();
+        foreach (var item in query)
+        {
+            list.Add(item.ToEntity());
+        }
         
         // Apply status filter if provided
         if (!string.IsNullOrEmpty(status))
         {
-            query = query.Where(t => t.Status == status);
+            list = list.Where(t => t.Status == status).ToList();
             ViewData["CurrentStatus"] = status;
         }
         
-        var model = query.ToList();
-        
-        return View(model);
+        var newList = new List<TransactionServiceModel>();
+        foreach (var item in list)
+        {
+            newList.Add(item.ToModel());
+        }
+        //var model = query.ToList();
+        //ViewBag.User = user;
+        return View(newList);
     }
 
 
@@ -80,6 +93,7 @@ public class TransactionController : Controller
         }
 
         var transaction = await _transactionService.GetByIdAsync(id);
+     
         
         if (transaction == null)
         {

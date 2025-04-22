@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using BankSystem.Models;
 using System.Threading.Tasks;
 
-[Authorize]
+//[Authorize]
 public class CreditRequestController : Controller
 {
     private readonly UserManager<User> _userManager;
@@ -23,16 +23,16 @@ public class CreditRequestController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(CreditRequest model)
+    public async Task<IActionResult> Create(Credit model)
     {
         if (ModelState.IsValid)
         {
             var user = await _userManager.GetUserAsync(User);
             model.UserId = user.Id;
             model.Status = "Pending";
-            model.RequestDate = DateTime.Now;
+            //model.RequestDate = DateTime.Now;
 
-            _context.CreditRequests.Add(model);
+            _context.Credits.Add(model);
             await _context.SaveChangesAsync();
 
             return RedirectToAction("Index", "Home");
@@ -44,7 +44,7 @@ public class CreditRequestController : Controller
     public async Task<IActionResult> MyRequests()
     {
         var user = await _userManager.GetUserAsync(User);
-        var requests = _context.CreditRequests.Where(r => r.UserId == user.Id).ToList();
+        var requests = _context.Credits.Where(r => r.UserId == user.Id).ToList();
         return View(requests);
     }
 }

@@ -1,39 +1,49 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@inject SignInManager<User> signIn
+
+@{
+    ViewData["Title"] = "Welcome to Your Bank";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container mt-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4">Welcome to Your Bank</h1>
+        <p class="lead text-muted">Smart. Secure. Simple.</p>
+    </div>
 
-    <nav>
-        <ul class="nav flex-column">
-            <li class="nav-item">
-                <a id="manage-bank-accounts" class="nav-link text-dark" asp-area="" asp-controller="BankAccount" asp-action="List" title="Manage">My bank accounts</a>
-            </li>
-            <li class="nav-item">
-                <a id="create-bank-account" class="nav-link text-dark" asp-area="" asp-controller="BankAccount" asp-action="Create" title="Manage">Create new bank account</a>
-            </li>
-            <li class="nav-item">
-                <a id="create-currency" class="nav-link text-dark" asp-area="" asp-controller="Currency" asp-action="Create" title="Manage">New currency</a>
-            </li>
-            <li class="nav-item">
-                <a id="create-bank-office" class="nav-link text-dark" asp-area="" asp-controller="Office" asp-action="Create" title="Manage">Create a new bank office</a>
-            </li>
-            <li class="nav-item">
-                <a id="list-bank-offices" class="nav-link text-dark" asp-area="" asp-controller="Office" asp-action="List" title="Manage">Bank offices</a>
-            </li>
-            <li class="nav-item">
-                <a id="create-card" class="nav-link text-dark" asp-area="" asp-controller="Card" asp-action="Create" title="Manage">Create a new card</a>
-            </li>
-            <li class="nav-item">
-                <a id="list-cards" class="nav-link text-dark" asp-area="" asp-controller="Card" asp-action="List" title="Manage">My cards</a>
-            </li>
-            <li class="nav-item">
-                <a id="transaction-history" class="nav-link text-dark" asp-area="" asp-controller="Transaction" asp-action="List" title="Manage">Transactions history</a>
-            </li>
-        </ul>
-    </nav>
+    <div class="row mb-5">
+        <div class="col-md-6">
+            <img src="https://cdn-icons-png.flaticon.com/512/1802/1802328.png" class="img-fluid rounded shadow" alt="Banking image">
+        </div>
+        <div class="col-md-6 d-flex flex-column justify-content-center">
+            <h3>Manage Your Finances with Confidence</h3>
+            <p class="text-muted">
+                From creating bank accounts to tracking transactions and managing your cards — everything is just a click away.
+            </p>
+            @if (signIn.IsSignedIn(User) && User.IsInRole("User"))
+            {
+                <a asp-controller="BankAccount" asp-action="List" class="btn btn-primary mt-3 w-50">View My Accounts</a>
+            }
+        </div>
+    </div>
+
+    <div class="row text-center">
+        <div class="col-md-4 mb-4">
+            <img src="https://cdn-icons-png.flaticon.com/512/4402/4402521.png" class="img-fluid rounded mb-3" style="width: 80px; height: 80px;" alt="Accounts">
+            <h5>Bank Accounts</h5>
+            <p class="text-muted">Create and manage multiple accounts in different currencies.</p>
+        </div>
+        <div class="col-md-4 mb-4">
+            <img src="https://cdn-icons-png.flaticon.com/512/6963/6963703.png" class="img-fluid rounded mb-3" style="width: 80px; height: 80px;" alt="Cards">
+            <h5>Cards</h5>
+            <p class="text-muted">Generate virtual or physical cards for your transactions.</p>
+        </div>
+        <div class="col-md-4 mb-4">
+            <img src="https://cdn-icons-png.flaticon.com/512/566/566445.png" class="img-fluid rounded mb-3" style="width: 80px; height: 80px;" alt="Transactions">
+            <h5>Transactions</h5>
+            <p class="text-muted">View your complete transaction history and monitor your spending.</p>
+        </div>
+    </div>
+
+
 
 </div>
-

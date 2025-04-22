@@ -44,11 +44,11 @@ where TEntity : MetadataBaseEntity
 
     protected async Task<User> GetCurrentUser()
     {
-        //var userId = httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var userId = httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-      //  var user = await userManager.FindByIdAsync(userId);
+        var user = await userManager.FindByIdAsync(userId);
         
-       // return await this.Context.Users.SingleOrDefaultAsync(user => user.Id == userId);
+        return await this.Context.Users.SingleOrDefaultAsync(user => user.Id == userId);
          var existingUser = await this.Context.Users
              .FirstOrDefaultAsync(user => user.Id == "00000000-0000-0000-0000-000000000006");  // Use a fixed GUID for consistency
         
@@ -57,11 +57,11 @@ where TEntity : MetadataBaseEntity
          {
              return existingUser;  // Return the existing user
          }
-        var user = new User
-         {
-             Id = "00000000-0000-0000-0000-000000000006",  // Use a fixed GUID for consistency.
-             UserName = "SystemUser"
-         };
+        // var user = new User
+        //  {
+        //      Id = "00000000-0000-0000-0000-000000000006",  // Use a fixed GUID for consistency.
+        //      UserName = "SystemUser"
+        //  };
         // this.Context.Entry(user).State = EntityState.Detached;
          return user;
     }

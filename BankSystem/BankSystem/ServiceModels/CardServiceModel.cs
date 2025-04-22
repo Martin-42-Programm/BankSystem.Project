@@ -6,7 +6,7 @@ public class CardServiceModel
     public string Number { get; set; }
    // public string Pseudonym { get; set; }
     public bool IsActive { get; set; }
-    //public string Id { get; set; }
+    public string CardholderId { get; set; }
     
     public DateTime ExpirationDate { get; set; }
 

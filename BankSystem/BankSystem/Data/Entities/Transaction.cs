@@ -13,7 +13,7 @@ public class Transaction : MetadataBaseEntity
     //public BankAccount SenderBankAccount { get; set; }
     
     [ForeignKey("Account")]
-    public string ReceiverAccountId { get; set; }
+    public Guid ReceiverAccountId { get; set; }
     
    // public BankAccount ReceiverBankAccount { get; set; }
 
@@ -27,7 +27,7 @@ public class Transaction : MetadataBaseEntity
     
     public string Status { get; set; }
     
-    public string FlagReason { get; set; }
+    public string? FlagReason { get; set; }
    
     
     

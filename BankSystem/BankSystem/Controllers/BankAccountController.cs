@@ -3,9 +3,11 @@ using BankSystem.Services;
 using BankSystem.ServiceModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BankSystem.Controllers;
 
+[Authorize(Roles = "Admin,User")]
 public class BankAccountController : Controller
 {
     private readonly IBankAccountService _bankAccountService;
@@ -32,11 +34,22 @@ public class BankAccountController : Controller
         return View(model);
     }
 
-    public IActionResult List()
+    public IActionResult List(string id)
     {
-        var query = _bankAccountService.GetAll().AsNoTracking();
         
-        var model = query.AsEnumerable();
+        var query = _bankAccountService.GetAll().AsNoTracking();
+        var list = new List<BankAccountServiceModel>();
+        foreach (var item in query)
+        {
+            if (item.UserId == id)
+                 list.Add(item);
+                
+        }
+        
+        
+            
+
+        var model = list.AsEnumerable();
         
         return View(model);
     }
@@ -95,7 +108,7 @@ public class BankAccountController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(string type, string currency)
+    public async Task<IActionResult> Create(string type, string currency, string id)
     {
         if (string.IsNullOrWhiteSpace(type) || string.IsNullOrWhiteSpace(currency))
         {
@@ -108,8 +121,8 @@ public class BankAccountController : Controller
             Type = type,
             Currency = currency,
             Balance = "0.0",
-            Id = Guid.NewGuid().ToString(), // ✅ Use Guid.NewGuid() instead of new Guid()
-           // UserId = "00000000-0000-0000-0000-00000000000"
+            Id = Guid.NewGuid().ToString(), 
+            UserId = id
         };
 
         try
@@ -136,6 +149,7 @@ public class BankAccountController : Controller
             TempData["NotificationMessage"] = $"Error creating bank account: {ex.Message}";
         }
 
-        return RedirectToAction(nameof(List));
+        return RedirectToAction(nameof(List), new { id = id });
     }
 }
+

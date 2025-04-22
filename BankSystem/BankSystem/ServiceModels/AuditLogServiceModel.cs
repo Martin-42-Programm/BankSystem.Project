@@ -18,7 +18,7 @@ public class AuditLogServiceModel : BaseServiceModel
     
     public DateTime Timestamp { get; set; }
     
-    public string Details { get; set; }
+    public string? Details { get; set; }
     
     public string IpAddress { get; set; }
     

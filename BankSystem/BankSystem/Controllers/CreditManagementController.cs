@@ -8,7 +8,7 @@ using System.Text.Json;
 
 namespace BankSystem.Controllers;
 
-[Authorize(Roles = "Admin")]
+//[Authorize(Roles = "Admin")]
 public class CreditManagementController : Controller
 {
     private readonly ProjectDbContext _context;
@@ -20,35 +20,36 @@ public class CreditManagementController : Controller
         _auditLogService = auditLogService;
     }
 
-    [HttpGet]
+    //[HttpGet]
     public IActionResult Index()
     {
-        var requests = _context.CreditRequests.Where(r => r.Status == "Pending").ToList();
-        return View(requests);
+        var requests = _context.Credits.Where(r => r.Status == "Pending").ToList();
+        var model = requests.AsEnumerable();
+        return View(model);
     }
 
     [HttpPost]
     public async Task<IActionResult> Approve(int id)
     {
-        var request = await _context.CreditRequests.FindAsync(id);
+        var request = await _context.Credits.FindAsync(id);
         if (request != null)
         {
             request.Status = "Approved";
-            var credit = new CreditManagement
+            var credit = new Credit
             {
                 UserId = request.UserId,
-                Amount = request.Amount,
+                RequestedAmount = request.RequestedAmount,
                 Status = "Active",
-                ApprovalDate = DateTime.Now
+               // ApprovalDate = DateTime.Now
             };
-            _context.CreditManagements.Add(credit);
+            _context.Credits.Add(credit);
             await _context.SaveChangesAsync();
             
             // Log the admin action
             var details = JsonSerializer.Serialize(new 
             { 
                 RequestId = id,
-                RequestAmount = request.Amount,
+                RequestAmount = request.RequestedAmount,
                 RequestUserId = request.UserId,
                 CreditId = credit.Id
             });
@@ -65,7 +66,7 @@ public class CreditManagementController : Controller
     [HttpPost]
     public async Task<IActionResult> Reject(int id)
     {
-        var request = await _context.CreditRequests.FindAsync(id);
+        var request = await _context.Credits.FindAsync(id);
         if (request != null)
         {
             request.Status = "Rejected";
@@ -75,7 +76,7 @@ public class CreditManagementController : Controller
             var details = JsonSerializer.Serialize(new 
             { 
                 RequestId = id,
-                RequestAmount = request.Amount,
+                RequestAmount = request.RequestedAmount,
                 RequestUserId = request.UserId
             });
             

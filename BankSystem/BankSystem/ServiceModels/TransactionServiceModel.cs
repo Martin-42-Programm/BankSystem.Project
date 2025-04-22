@@ -13,7 +13,7 @@ public class TransactionServiceModel
     
     public string Status { get; set; }
     
-    public string FlagReason { get; set; }
+    public string? FlagReason { get; set; }
 
 
     public TransactionServiceModel()

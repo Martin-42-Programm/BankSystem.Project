@@ -19,4 +19,6 @@ global using Microsoft.AspNetCore.SignalR.Client;
 global using DinkToPdf;
 global using DinkToPdf.Contracts;
 global using Microsoft.AspNetCore.Identity;
+global using BankSystem.Data.DataSeed;
+global using Microsoft.AspNetCore.Authorization;
 //global using Microsoft.AspNetCore.SignalR;

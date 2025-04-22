@@ -9,7 +9,7 @@ public static class CardMappings
         {
            // Id = Guid.TryParse(model.Id, out Guid parsedId) ? parsedId : Guid.NewGuid(),
             Type = model.Type,
-            CardholderId = "00000000-0000-0000-0000-000000000006",
+            CardholderId = model.CardholderId,
             SecretCode = random.Next(100, 999).ToString(),
             IsActive = model.IsActive,
             ExpirationDate = model.ExpirationDate,
@@ -25,7 +25,7 @@ public static class CardMappings
         {
             //Id = entity.Id.ToString(),
             Type = entity.Type,
-           // Pseudonym = entity.CardholderId,
+            CardholderId = entity.CardholderId,
             Number = entity.Number,
             IsActive = entity.IsActive,
             ExpirationDate = entity.ExpirationDate,

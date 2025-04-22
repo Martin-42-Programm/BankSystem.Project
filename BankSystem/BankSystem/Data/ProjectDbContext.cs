@@ -28,10 +28,11 @@ public class ProjectDbContext : IdentityDbContext<User>
     
     public DbSet<Office> Offices { get; set; }
     
-    public DbSet<CreditRequest> CreditRequests { get; set; }
-    public DbSet<CreditManagement> CreditManagements { get; set; }
+    public DbSet<Credit> Credits { get; set; }
+   // public DbSet<CreditManagement> CreditManagements { get; set; }
     public DbSet<Notification> Notifications { get; set; }
     public DbSet<AuditLog> AuditLogs { get; set; }
+    public DbSet<User> Users { get; set; }
      
     public ProjectDbContext(DbContextOptions<ProjectDbContext> options)
         : base(options)

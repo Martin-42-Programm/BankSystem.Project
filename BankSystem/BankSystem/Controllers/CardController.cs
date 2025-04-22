@@ -7,7 +7,7 @@ namespace BankSystem.Controllers;
 
     
 
-
+[Authorize(Roles = "Admin, User")]
 public class CardController : Controller
 
 {
@@ -15,6 +15,7 @@ public class CardController : Controller
     private readonly INotificationService _notificationService;
     private readonly IOfficeService _officeService;
     private readonly IHubContext<NotificationHub> _hubContext;
+    private readonly IAuditLogService _auditLogService;
    
 
     public CardController(ICardService cardService, INotificationService notificationService, IHubContext<NotificationHub> hubContext, IOfficeService officeService)
@@ -31,11 +32,15 @@ public class CardController : Controller
         var model =  _cardService.GetById(id);
         return View(model);
     }
-    public IActionResult List()
+    public IActionResult List(string id)
     {
         var query = _cardService.GetAll().AsNoTracking();
-        
-        var model = query.ToList();
+        var list = new List<CardServiceModel>();
+        foreach (var item in query)
+        {
+            if (item.CardholderId == id) list.Add(item);
+        }
+        var model = list.ToList();
         
         return View(model);
         
@@ -50,7 +55,13 @@ public class CardController : Controller
         
         
         card.IsActive = !card.IsActive;
-        
+        if (card == null)
+        {
+            throw new Exception("Card not found");
+        }
+
+
+        await _auditLogService.LogActionAsync("Switch", "Card", $"{card.Number}", null);
         
 
        /* if (card == null)
@@ -156,7 +167,7 @@ public class CardController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(string type, string pickupOffice, string pseudonym)
+    public async Task<IActionResult> Create(string type, string pickupOffice, string pseudonym, string id)
     {
         if (string.IsNullOrWhiteSpace(type) )
         {
@@ -173,7 +184,8 @@ public class CardController : Controller
             Number =  (random.Next(10000000, 99999999))+ random.Next(10000000, 99999999).ToString(),
             ExpirationDate = DateTime.Now.AddYears(5),
             PickupOffice  = pickupOffice,
-            Pseudonym = pseudonym
+            Pseudonym = pseudonym,
+            CardholderId = id,
         };
         
         var isSuccess = await _cardService.AddAsync(card) != null;
@@ -187,7 +199,7 @@ public class CardController : Controller
         // Also send via SignalR
         await _notificationService.NotifyAsync("00000000-0000-0000-0000-000000000006", isSuccess, $"Adding new {type} card");
 
-        return RedirectToAction(nameof(List));
+        return RedirectToAction(nameof(List), new { id = id });
     }
     
     

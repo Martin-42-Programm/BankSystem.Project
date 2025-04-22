@@ -7,7 +7,7 @@ public static class TransactionMappings
         return new Transaction()
         { 
             Id = Guid.Parse(model.TransactionId),
-            ReceiverAccountId = model.ReceiverId,
+            ReceiverAccountId = Guid.Parse(model.ReceiverId),
             Amount = model.Amount,
             Type = model.Type,
             Currency = model.Currency,
@@ -29,7 +29,7 @@ public static class TransactionMappings
             Currency = entity.Currency,
             SenderId = entity.SenderAccountId.ToString(),
             Status = entity.Status,
-            FlagReason = entity.FlagReason
+            FlagReason = entity.FlagReason ?? null
         };
     }
 }

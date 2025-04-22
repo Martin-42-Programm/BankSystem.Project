@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 
 namespace BankSystem.Controllers;
-
+[Authorize(Roles = "Admin, User")]
 public class OfficeController : Controller
 {
     private readonly IOfficeService _officeService;
